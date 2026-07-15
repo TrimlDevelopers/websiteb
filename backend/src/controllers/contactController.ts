@@ -21,9 +21,12 @@ function parseBody(body: unknown): ContactEnquiryInput {
 }
 
 export async function createContactEnquiry(req: Request, res: Response): Promise<void> {
+  console.log('[contact] Starting validation')
+
   const payload = parseBody(req.body)
 
   if (!payload.name || !payload.email || !payload.message) {
+    console.log('[contact] Validation failed: missing required fields')
     res.status(400).json({
       success: false,
       message: 'Name, email, and message are required.',
@@ -32,6 +35,7 @@ export async function createContactEnquiry(req: Request, res: Response): Promise
   }
 
   if (!isValidEmail(payload.email)) {
+    console.log('[contact] Validation failed: invalid email')
     res.status(400).json({
       success: false,
       message: 'Please provide a valid email address.',
@@ -39,12 +43,16 @@ export async function createContactEnquiry(req: Request, res: Response): Promise
     return
   }
 
+  console.log('[contact] Validation complete')
+
   let enquiry
   try {
+    console.log('[contact] Saving enquiry to MongoDB...')
     enquiry = await ContactEnquiryModel.create({
       ...payload,
       status: 'New',
     })
+    console.log('[contact] MongoDB save complete', { id: String(enquiry._id) })
   } catch (error) {
     console.error('[contact] Failed to save enquiry:', error)
     res.status(500).json({
@@ -54,20 +62,32 @@ export async function createContactEnquiry(req: Request, res: Response): Promise
     return
   }
 
-  try {
-    await EmailService.sendInternalNotification(enquiry)
-  } catch (error) {
-    console.error('[contact] Internal notification email failed:', error)
-  }
-
-  try {
-    await EmailService.sendCustomerConfirmation(enquiry)
-  } catch (error) {
-    console.error('[contact] Customer confirmation email failed:', error)
-  }
-
+  // Respond immediately — do not await SMTP (can ETIMEDOUT on Render).
+  console.log('[contact] Returning HTTP response')
   res.status(200).json({
     success: true,
     message: SUCCESS_MESSAGE,
+  })
+
+  // Background email dispatch (after response). Failures are logged only.
+  const emailPayload = {
+    name: enquiry.name,
+    email: enquiry.email,
+    phone: enquiry.phone,
+    company: enquiry.company,
+    service: enquiry.service,
+    message: enquiry.message,
+    createdAt: enquiry.createdAt,
+  }
+
+  setImmediate(() => {
+    console.log('[contact] Starting background email dispatch')
+    void EmailService.dispatchEnquiryEmails(emailPayload)
+      .then(() => {
+        console.log('[contact] Background email dispatch finished')
+      })
+      .catch((error) => {
+        console.error('[contact] Background email dispatch crashed:', error)
+      })
   })
 }
