@@ -1,4 +1,7 @@
-# Render services for Tribound Tech website
+# Render Blueprint for Tribound Tech
+# If the service was created manually, you MUST also set these in the dashboard —
+# render.yaml is NOT applied automatically to existing services.
+
 services:
   - type: web
     name: triml-frontend
@@ -11,7 +14,6 @@ services:
         value: "22"
       - key: NPM_CONFIG_PRODUCTION
         value: "false"
-      # Set this in the Render dashboard to your deployed Express URL (no trailing slash)
       - key: VITE_API_URL
         sync: false
       - key: VITE_SITE_URL
@@ -24,12 +26,10 @@ services:
   - type: web
     name: triml-backend
     runtime: node
+    # Critical: build/run the backend package, not the monorepo root
     rootDir: backend
-    # IMPORTANT in Render dashboard:
-    #   Build Command: npm ci && npm run build
-    #   Start Command: npm start   (NOT npm run dev)
-    # Do not set PORT — Render provides it.
     buildCommand: npm ci && npm run build
+    # Critical: production start — NEVER "npm run dev"
     startCommand: npm start
     healthCheckPath: /api/health
     envVars:

@@ -16,7 +16,9 @@
     "dev:backend": "npm run dev -w backend",
     "build": "npm run build -w frontend && npm run build -w backend",
     "build:frontend": "npm run build -w frontend",
-    "build:backend": "npm run build -w backend"
+    "build:backend": "npm run build -w backend",
+    "start": "npm run start -w triml-backend",
+    "start:backend": "npm run start -w triml-backend"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
