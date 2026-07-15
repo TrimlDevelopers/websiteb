@@ -25,13 +25,18 @@ services:
     name: triml-backend
     runtime: node
     rootDir: backend
+    # IMPORTANT in Render dashboard:
+    #   Build Command: npm ci && npm run build
+    #   Start Command: npm start   (NOT npm run dev)
+    # Do not set PORT — Render provides it.
     buildCommand: npm ci && npm run build
     startCommand: npm start
+    healthCheckPath: /api/health
     envVars:
       - key: NODE_VERSION
         value: "22"
-      - key: PORT
-        generateValue: false
+      - key: NPM_CONFIG_PRODUCTION
+        value: "false"
       - key: FRONTEND_URL
         value: https://websiteb-f1.onrender.com,http://localhost:5173
       - key: MONGODB_URI

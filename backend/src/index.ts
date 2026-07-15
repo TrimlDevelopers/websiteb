@@ -6,6 +6,8 @@ import { connectDatabase } from './config/db.js'
 import contactRouter from './routes/contact.js'
 
 const app = express()
+
+// Render injects PORT — never hardcode a production port
 const port = Number(process.env.PORT) || 3001
 
 app.use(cors(getCorsOptions()))
@@ -24,7 +26,9 @@ async function start(): Promise<void> {
   await connectDatabase()
 
   app.listen(port, '0.0.0.0', () => {
-    console.log(`[server] Listening on port ${port}`)
+    console.log(`[server] Listening on 0.0.0.0:${port}`)
+    console.log(`[server] NODE_ENV=${process.env.NODE_ENV ?? 'undefined'}`)
+    console.log(`[server] RENDER=${process.env.RENDER ?? 'undefined'}`)
     console.log(`[server] CORS origins: ${getAllowedOrigins().join(', ')}`)
   })
 }
