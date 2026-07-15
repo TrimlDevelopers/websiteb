@@ -4,6 +4,7 @@ import express from 'express'
 import { getAllowedOrigins, getCorsOptions } from './config/cors.js'
 import { connectDatabase } from './config/db.js'
 import contactRouter from './routes/contact.js'
+import socketTestRouter from './routes/socketTest.js'
 import testSmtpRouter from './routes/testSmtp.js'
 import { EmailService } from './services/emailService.js'
 
@@ -23,6 +24,7 @@ app.get('/api/health', (_req, res) => {
 })
 
 app.use('/api/contact', contactRouter)
+app.use('/api/socket-test', socketTestRouter)
 app.use('/api/test-smtp', testSmtpRouter)
 
 async function start(): Promise<void> {
