@@ -1,5 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Mail, Phone, Globe, MapPin, Send, ArrowRight } from 'lucide-react'
+import { ApiError } from '../../api/client'
+import { submitContactEnquiry } from '../../api/contact'
 import { company, services } from '../../data/content'
 import Button from '../ui/Button'
 import AnimateIn from '../ui/AnimateIn'
@@ -10,8 +12,6 @@ const contactItems = [
   { icon: Globe, text: company.website, href: `https://${company.website}` },
   { icon: MapPin, text: company.location, href: undefined },
 ] as const
-
-const apiBase = import.meta.env.VITE_API_URL ?? ''
 
 const inputClass =
   'box-border w-full rounded-lg border border-white/10 bg-navy-900/60 px-3 py-2 text-sm text-white outline-none focus:border-brand-500/50 disabled:opacity-60'
@@ -36,33 +36,26 @@ export default function ContactCTA() {
     const message = (form.elements.namedItem('message') as HTMLTextAreaElement).value.trim()
 
     try {
-      const res = await fetch(`${apiBase}/api/contact`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name,
-          email,
-          phone,
-          company: companyName,
-          service,
-          message,
-        }),
+      const data = await submitContactEnquiry({
+        name,
+        email,
+        phone,
+        company: companyName,
+        service,
+        message,
       })
 
-      const data = (await res.json()) as { success?: boolean; message?: string; error?: string }
-
-      if (!res.ok) {
-        setError(data.message ?? data.error ?? 'Something went wrong. Please try again.')
-        return
-      }
-
       setSuccessMessage(
-        data.message ??
+        data.message ||
           'Thank you for contacting Tribound Tech. Your enquiry has been received successfully.',
       )
       setSubmitted(true)
-    } catch {
-      setError('Unable to send message. Please check your connection and try again.')
+    } catch (err) {
+      if (err instanceof ApiError) {
+        setError(err.message || 'Something went wrong. Please try again.')
+      } else {
+        setError('Unable to send message. Please check your connection and try again.')
+      }
     } finally {
       setLoading(false)
     }
