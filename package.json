@@ -2,6 +2,10 @@
   "name": "triml-website",
   "private": true,
   "version": "0.0.0",
+  "engines": {
+    "node": "22.x",
+    "npm": ">=10"
+  },
   "workspaces": [
     "frontend",
     "backend"
@@ -16,5 +20,8 @@
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
+  },
+  "optionalDependencies": {
+    "@rolldown/binding-linux-x64-gnu": "1.1.5"
   }
 }

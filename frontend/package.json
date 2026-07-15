@@ -1,8 +1,12 @@
 {
-  "name": "triml-website",
+  "name": "triml-frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": "22.x",
+    "npm": ">=10"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && node scripts/generate-sitemap.mjs && vite build",
@@ -24,5 +28,8 @@
     "react-dom": "^19.2.7",
     "react-helmet-async": "^3.0.0",
     "react-router-dom": "^7.18.0"
+  },
+  "optionalDependencies": {
+    "@rolldown/binding-linux-x64-gnu": "1.1.5"
   }
 }
