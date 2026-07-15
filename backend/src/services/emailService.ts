@@ -12,7 +12,8 @@ const SMTP_TIMEOUT_MS = Number(process.env.SMTP_TIMEOUT_MS) || 10_000
 
 let sharedTransporter: Transporter | null = null
 
-function getSmtpConfig(): SMTPTransport.Options | null {
+/** Shared Hostinger SMTP options used by EmailService and /api/test-smtp. */
+export function getSmtpConfig(): SMTPTransport.Options | null {
   const host = cleanEnv(process.env.SMTP_SERVER)
   const port = Number(cleanEnv(process.env.SMTP_PORT)) || 465
   const user = cleanEnv(process.env.SMTP_USERNAME)
