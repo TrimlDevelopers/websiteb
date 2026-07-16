@@ -1,6 +1,7 @@
 import { Suspense, lazy, type ReactNode } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Layout from './components/layout/Layout'
+import AdminProtectedRoute from './components/admin/AdminProtectedRoute'
 
 const HomePage = lazy(() => import('./pages/HomePage'))
 const ServicesPage = lazy(() => import('./pages/ServicesPage'))
@@ -12,6 +13,7 @@ const ContactPage = lazy(() => import('./pages/ContactPage'))
 const FaqPage = lazy(() => import('./pages/FaqPage'))
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage'))
 const TermsPage = lazy(() => import('./pages/TermsPage'))
+const AdminLoginPage = lazy(() => import('./pages/AdminLoginPage'))
 const AdminEnquiriesPage = lazy(() => import('./pages/AdminEnquiriesPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
@@ -35,10 +37,20 @@ export default function App() {
   return (
     <Routes>
       <Route
+        path="/admin/login"
+        element={
+          <LazyRoute>
+            <AdminLoginPage />
+          </LazyRoute>
+        }
+      />
+      <Route
         path="/admin/enquiries"
         element={
           <LazyRoute>
-            <AdminEnquiriesPage />
+            <AdminProtectedRoute>
+              <AdminEnquiriesPage />
+            </AdminProtectedRoute>
           </LazyRoute>
         }
       />

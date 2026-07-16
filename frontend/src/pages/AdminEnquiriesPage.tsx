@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState, type FormEvent } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   deleteEnquiry,
   fetchEnquiries,
@@ -7,6 +8,8 @@ import {
   type EnquiryStatus,
   updateEnquiryStatus,
 } from '../api/adminEnquiries'
+import { adminLogout } from '../api/adminAuth'
+import { ApiError } from '../api/client'
 import SEO from '../components/seo/SEO'
 
 type StatusFilter = EnquiryStatus | 'All'
@@ -52,6 +55,7 @@ function formatDate(value: string): string {
 }
 
 export default function AdminEnquiriesPage() {
+  const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [searchInput, setSearchInput] = useState('')
   const [status, setStatus] = useState<StatusFilter>('All')
@@ -63,6 +67,7 @@ export default function AdminEnquiriesPage() {
   const [totalPages, setTotalPages] = useState(1)
   const [stats, setStats] = useState({ total: 0, new: 0, contacted: 0, closed: 0 })
   const [loading, setLoading] = useState(false)
+  const [loggingOut, setLoggingOut] = useState(false)
   const [error, setError] = useState('')
 
   const [viewEnquiry, setViewEnquiry] = useState<Enquiry | null>(null)
@@ -83,15 +88,31 @@ export default function AdminEnquiriesPage() {
       setTotalPages(list.totalPages)
       setStats(statsRes.stats)
     } catch (err) {
+      if (err instanceof ApiError && err.status === 401) {
+        navigate('/admin/login', { replace: true })
+        return
+      }
       setError(err instanceof Error ? err.message : 'Failed to load enquiries')
     } finally {
       setLoading(false)
     }
-  }, [search, status, sort, page])
+  }, [search, status, sort, page, navigate])
 
   useEffect(() => {
     void loadData()
   }, [loadData])
+
+  async function handleLogout() {
+    setLoggingOut(true)
+    try {
+      await adminLogout()
+    } catch {
+      // Still leave the UI even if network fails
+    } finally {
+      setLoggingOut(false)
+      navigate('/admin/login', { replace: true })
+    }
+  }
 
   function applySearch(e: FormEvent) {
     e.preventDefault()
@@ -139,11 +160,21 @@ export default function AdminEnquiriesPage() {
         noindex
       />
       <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6">
-          <p className="text-xs font-semibold uppercase tracking-wide text-brand-600">
-            Tribound Tech
-          </p>
-          <h1 className="text-xl font-bold text-navy-900 sm:text-2xl">Enquiry Management</h1>
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-brand-600">
+              Tribound Tech
+            </p>
+            <h1 className="text-xl font-bold text-navy-900 sm:text-2xl">Enquiry Management</h1>
+          </div>
+          <button
+            type="button"
+            onClick={() => void handleLogout()}
+            disabled={loggingOut}
+            className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-100 disabled:opacity-50"
+          >
+            {loggingOut ? 'Signing out…' : 'Log out'}
+          </button>
         </div>
       </header>
 

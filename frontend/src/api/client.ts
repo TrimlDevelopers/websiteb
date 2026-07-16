@@ -30,6 +30,7 @@ export async function apiRequest<T>(
 
   const res = await fetch(buildUrl(path), {
     ...rest,
+    credentials: 'include',
     headers: {
       Accept: 'application/json',
       ...(json !== undefined ? { 'Content-Type': 'application/json' } : {}),

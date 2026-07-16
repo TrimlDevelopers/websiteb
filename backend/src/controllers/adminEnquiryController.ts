@@ -167,10 +167,3 @@ export async function getAdminEnquiryStats(_req: Request, res: Response): Promis
     })
   }
 }
-
-export async function verifyAdminAccess(_req: Request, res: Response): Promise<void> {
-  res.status(200).json({
-    success: true,
-    message: 'Admin access verified.',
-  })
-}

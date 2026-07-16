@@ -1,40 +1,46 @@
 import type { NextFunction, Request, Response } from 'express'
-import { cleanEnv } from '../utils/env.js'
+import {
+  isAdminAuthConfigured,
+  readAdminTokenFromRequest,
+  verifyAdminToken,
+  type AdminJwtPayload,
+} from '../utils/adminAuth.js'
+
+export type AuthedAdminRequest = Request & {
+  admin?: AdminJwtPayload
+}
 
 /**
- * Protects /api/admin/* routes.
- * Expects: Authorization: Bearer <ADMIN_API_KEY>
- * or header: x-admin-api-key: <ADMIN_API_KEY>
- *
- * Set ADMIN_API_KEY in the environment. Until a full auth system exists,
- * this shared secret gates the enquiry dashboard APIs.
+ * Requires a valid admin JWT from the HttpOnly cookie (or Bearer token).
  */
 export function requireAdmin(req: Request, res: Response, next: NextFunction): void {
-  const expected = cleanEnv(process.env.ADMIN_API_KEY)
-
-  if (!expected) {
-    console.error('[admin] ADMIN_API_KEY is not configured')
+  if (!isAdminAuthConfigured()) {
+    console.error('[admin] Auth is not configured (ADMIN_USERNAME / ADMIN_PASSWORD / JWT_SECRET)')
     res.status(503).json({
       success: false,
-      message: 'Admin access is not configured on this server.',
+      message: 'Admin authentication is not configured on this server.',
     })
     return
   }
 
-  const headerKey = cleanEnv(req.header('x-admin-api-key') ?? undefined)
-  const auth = req.header('authorization') ?? ''
-  const bearer =
-    auth.toLowerCase().startsWith('bearer ') ? cleanEnv(auth.slice(7)) : ''
-
-  const provided = headerKey || bearer
-
-  if (!provided || provided !== expected) {
+  const token = readAdminTokenFromRequest(req)
+  if (!token) {
     res.status(401).json({
       success: false,
-      message: 'Unauthorized. Valid admin credentials are required.',
+      message: 'Unauthorized. Please sign in.',
     })
     return
   }
 
+  const payload = verifyAdminToken(token)
+  if (!payload) {
+    res.status(401).json({
+      success: false,
+      message: 'Unauthorized. Session expired or invalid.',
+    })
+    return
+  }
+
+  ;(req as AuthedAdminRequest).admin = payload
   next()
 }
