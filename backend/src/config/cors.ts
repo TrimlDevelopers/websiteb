@@ -30,8 +30,8 @@ export function getCorsOptions(): CorsOptions {
       }
       callback(new Error(`CORS blocked for origin: ${origin}`))
     },
-    methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Accept'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
   }
 }
 
