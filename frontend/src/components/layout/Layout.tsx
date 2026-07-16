@@ -1,20 +1,41 @@
 import { Outlet, useLocation } from 'react-router-dom'
-import { useEffect } from 'react'
+import { Suspense, lazy, useEffect, useState } from 'react'
 import Header from './Header'
 import Footer from './Footer'
-import Chatbot from '../chatbot/Chatbot'
+
+const Chatbot = lazy(() => import('../chatbot/Chatbot'))
 
 export default function Layout() {
   const { pathname, hash } = useLocation()
+  const [chatbotReady, setChatbotReady] = useState(false)
 
   useEffect(() => {
     if (hash) {
-      const el = document.querySelector(hash)
-      el?.scrollIntoView({ behavior: 'smooth' })
-    } else {
-      window.scrollTo(0, 0)
+      const frame = window.requestAnimationFrame(() => {
+        document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' })
+      })
+      return () => window.cancelAnimationFrame(frame)
     }
+    window.scrollTo(0, 0)
   }, [pathname, hash])
+
+  useEffect(() => {
+    let idleId: number | undefined
+    let timeoutId: ReturnType<typeof setTimeout> | undefined
+
+    if (typeof window.requestIdleCallback === 'function') {
+      idleId = window.requestIdleCallback(() => setChatbotReady(true), { timeout: 2500 })
+    } else {
+      timeoutId = setTimeout(() => setChatbotReady(true), 1200)
+    }
+
+    return () => {
+      if (idleId !== undefined && typeof window.cancelIdleCallback === 'function') {
+        window.cancelIdleCallback(idleId)
+      }
+      if (timeoutId !== undefined) clearTimeout(timeoutId)
+    }
+  }, [])
 
   return (
     <div className="flex min-h-screen min-w-0 flex-col overflow-x-clip bg-white">
@@ -23,7 +44,11 @@ export default function Layout() {
         <Outlet />
       </main>
       <Footer />
-      <Chatbot />
+      {chatbotReady ? (
+        <Suspense fallback={null}>
+          <Chatbot />
+        </Suspense>
+      ) : null}
     </div>
   )
 }

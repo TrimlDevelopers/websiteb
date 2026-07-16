@@ -1,13 +1,15 @@
+import { Suspense, lazy } from 'react'
 import Hero from '../components/home/Hero'
 import ServicesOverview from '../components/home/ServicesOverview'
-import IndustriesPreview from '../components/home/IndustriesPreview'
-import RecentProjects from '../components/home/RecentProjects'
-import WhyTriML from '../components/home/WhyTriML'
-import DevelopmentProcess from '../components/home/DevelopmentProcess'
-import ContactCTA from '../components/home/ContactCTA'
 import SEO from '../components/seo/SEO'
 import { pageMeta } from '../utils/seo'
 import { homeJsonLd } from '../utils/structuredData'
+
+const IndustriesPreview = lazy(() => import('../components/home/IndustriesPreview'))
+const RecentProjects = lazy(() => import('../components/home/RecentProjects'))
+const WhyTriML = lazy(() => import('../components/home/WhyTriML'))
+const DevelopmentProcess = lazy(() => import('../components/home/DevelopmentProcess'))
+const ContactCTA = lazy(() => import('../components/home/ContactCTA'))
 
 export default function HomePage() {
   return (
@@ -20,11 +22,13 @@ export default function HomePage() {
       />
       <Hero />
       <ServicesOverview />
-      <IndustriesPreview />
-      <RecentProjects />
-      <WhyTriML />
-      <DevelopmentProcess />
-      <ContactCTA />
+      <Suspense fallback={null}>
+        <IndustriesPreview />
+        <RecentProjects />
+        <WhyTriML />
+        <DevelopmentProcess />
+        <ContactCTA />
+      </Suspense>
     </>
   )
 }

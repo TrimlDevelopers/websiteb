@@ -522,7 +522,6 @@ section {
     opacity var(--animate-duration, 650ms) cubic-bezier(0.22, 1, 0.36, 1),
     transform var(--animate-duration, 650ms) cubic-bezier(0.22, 1, 0.36, 1);
   transition-delay: var(--animate-delay, 0ms);
-  will-change: opacity, transform;
 }
 
 .animate-in--fade-up {
@@ -548,6 +547,7 @@ section {
 .animate-in--visible {
   opacity: 1;
   transform: translate(0) scale(1);
+  will-change: auto;
 }
 
 .btn-pulse {

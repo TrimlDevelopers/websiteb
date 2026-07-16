@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { memo, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 
 type AnimationType = 'fade-up' | 'fade-in' | 'fade-left' | 'fade-right' | 'scale-in'
 
@@ -11,7 +11,7 @@ interface AnimateInProps {
   once?: boolean
 }
 
-export default function AnimateIn({
+function AnimateIn({
   children,
   animation = 'fade-up',
   delay = 0,
@@ -26,6 +26,11 @@ export default function AnimateIn({
     const el = ref.current
     if (!el) return
 
+    if (typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setVisible(true)
+      return
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -35,7 +40,7 @@ export default function AnimateIn({
           setVisible(false)
         }
       },
-      { threshold: 0.1, rootMargin: '0px 0px -32px 0px' },
+      { threshold: 0.08, rootMargin: '0px 0px -24px 0px' },
     )
 
     observer.observe(el)
@@ -57,3 +62,5 @@ export default function AnimateIn({
     </div>
   )
 }
+
+export default memo(AnimateIn)

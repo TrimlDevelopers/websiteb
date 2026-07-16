@@ -72,8 +72,9 @@ export default function IndustriesPage() {
                       <img
                         src={industry.image}
                         alt={`${industry.title} — industry solutions by Tribound Tech`}
-                        width={800}
-                        height={450}
+                        width={640}
+                        height={360}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
                         loading="lazy"
                         decoding="async"

@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import type { services } from '../../data/content'
@@ -9,7 +10,7 @@ interface ServiceCardProps {
   service: Service
 }
 
-export default function ServiceCard({ service }: ServiceCardProps) {
+function ServiceCard({ service }: ServiceCardProps) {
   const Icon = getServiceIcon(service.icon)
 
   return (
@@ -33,3 +34,5 @@ export default function ServiceCard({ service }: ServiceCardProps) {
     </Link>
   )
 }
+
+export default memo(ServiceCard)

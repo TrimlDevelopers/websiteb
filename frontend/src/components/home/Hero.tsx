@@ -14,7 +14,7 @@ export default function Hero() {
             {company.heroBadge}
           </span>
 
-          <h1 className="hero-enter hero-enter-2 mt-4 text-balance text-xl font-extrabold leading-[1.15] tracking-tight text-navy-900 sm:mt-5 sm:text-3xl md:text-4xl lg:text-5xl xl:text-[3.25rem]">
+          <h1 className="hero-enter hero-enter-2 mt-4 text-balance text-xl font-bold leading-[1.15] tracking-tight text-navy-900 sm:mt-5 sm:text-3xl md:text-4xl lg:text-5xl xl:text-[3.25rem]">
             {company.heroTitle}{' '}
             <span className="text-brand-500">{company.heroTitleAccent}</span>
           </h1>
