@@ -10,7 +10,7 @@ export default function Logo({ light = false }: LogoProps) {
   const gradId = useId()
 
   return (
-    <Link to="/" className="flex min-w-0 items-center gap-2 sm:gap-2.5">
+    <Link to="/" className="flex min-w-0 items-center gap-2 sm:gap-2.5" aria-label={`${company.name} home`}>
       <svg
         width="36"
         height="36"

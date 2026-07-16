@@ -29,9 +29,12 @@ export default function IndustriesPreview() {
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
                     src={industry.image}
-                    alt={`${industry.title} industry software solutions`}
+                    alt={`${industry.title} industry software solutions by Tribound Tech`}
+                    width={800}
+                    height={600}
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                     loading="lazy"
+                    decoding="async"
                   />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-navy-900/95 via-navy-900/40 to-transparent transition-opacity duration-300 group-hover:from-navy-900/98" />

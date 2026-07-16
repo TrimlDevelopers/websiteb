@@ -6,6 +6,7 @@ import ServiceDetailPage from './pages/ServiceDetailPage'
 import ProductsPage from './pages/ProductsPage'
 import IndustriesPage from './pages/IndustriesPage'
 import AdminEnquiriesPage from './pages/AdminEnquiriesPage'
+import NotFoundPage from './pages/NotFoundPage'
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="/services/:id" element={<ServiceDetailPage />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/industries" element={<IndustriesPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   )

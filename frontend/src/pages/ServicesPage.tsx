@@ -3,14 +3,27 @@ import ServiceCard from '../components/services/ServiceCard'
 import ContactCTA from '../components/home/ContactCTA'
 import AnimateIn from '../components/ui/AnimateIn'
 import SEO from '../components/seo/SEO'
+import { pageMeta } from '../utils/seo'
+import { breadcrumbSchema, webPageSchema } from '../utils/structuredData'
 
 export default function ServicesPage() {
   return (
     <>
       <SEO
-        title="Software Development Services"
-        description={`Explore ${company.name} software services — custom AI solutions, web and mobile apps, microservices, business automation, and data analytics.`}
+        title={pageMeta.services.title}
+        description={pageMeta.services.description}
         path="/services"
+        jsonLd={[
+          webPageSchema({
+            path: '/services',
+            name: pageMeta.services.title,
+            description: pageMeta.services.description,
+          }),
+          breadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'Services', path: '/services' },
+          ]),
+        ]}
       />
       <section className="section-pad overflow-x-clip bg-white">
         <div className="site-container min-w-0">

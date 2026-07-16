@@ -12,7 +12,7 @@ export const company = {
     'Custom software with AI, microservices, and cloud-native systems for modern businesses.',
   email: 'info@triboundtech.com',
   phone: '+91 94048 93174',
-  website: 'www.triboundtech.com',
+  website: 'triboundtech.com',
   location: 'Kolhapur, Maharashtra, India',
 }
 
@@ -25,8 +25,8 @@ export const socialLinks = [
 
 export const footerLinks = {
   legal: [
-    { label: 'Privacy Policy', href: '#' },
-    { label: 'Terms & Conditions', href: '#' },
+    { label: 'Privacy Policy', href: '/#contact' },
+    { label: 'Terms & Conditions', href: '/#contact' },
   ],
 }
 

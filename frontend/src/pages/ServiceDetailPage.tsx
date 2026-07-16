@@ -1,4 +1,4 @@
-import { Link, useParams, Navigate } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { CheckCircle2, ArrowRight } from 'lucide-react'
 import { services } from '../data/content'
 import { getServiceIcon } from '../utils/serviceIcons'
@@ -6,28 +6,36 @@ import Button from '../components/ui/Button'
 import ContactCTA from '../components/home/ContactCTA'
 import AnimateIn from '../components/ui/AnimateIn'
 import SEO from '../components/seo/SEO'
-import { breadcrumbSchema, serviceSchema } from '../utils/structuredData'
+import NotFoundPage from './NotFoundPage'
+import { breadcrumbSchema, serviceSchema, webPageSchema } from '../utils/structuredData'
+import { truncateMeta } from '../utils/seo'
 
 export default function ServiceDetailPage() {
   const { id } = useParams<{ id: string }>()
   const service = services.find((s) => s.id === id)
 
   if (!service) {
-    return <Navigate to="/services" replace />
+    return <NotFoundPage />
   }
 
   const Icon = getServiceIcon(service.icon)
   const otherServices = services.filter((s) => s.id !== service.id)
+  const description = truncateMeta(service.description || service.shortDescription)
 
   return (
     <>
       <SEO
         title={service.title}
-        description={service.shortDescription}
+        description={description}
         path={`/services/${service.id}`}
         type="article"
         jsonLd={[
           serviceSchema(service),
+          webPageSchema({
+            path: `/services/${service.id}`,
+            name: service.title,
+            description,
+          }),
           breadcrumbSchema([
             { name: 'Home', path: '/' },
             { name: 'Services', path: '/services' },

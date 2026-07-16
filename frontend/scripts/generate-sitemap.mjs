@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-const siteUrl = (process.env.VITE_SITE_URL ?? 'https://www.triboundtech.com').replace(/\/$/, '')
+const siteUrl = (process.env.VITE_SITE_URL ?? 'https://triboundtech.com').replace(/\/$/, '')
 
 const serviceIds = [
   'custom-software',
@@ -15,25 +15,45 @@ const serviceIds = [
   'data-analytics',
 ]
 
-const paths = ['/', '/services', '/products', '/industries', ...serviceIds.map((id) => `/services/${id}`)]
+const paths = [
+  { path: '/', priority: '1.0', changefreq: 'weekly' },
+  { path: '/services', priority: '0.9', changefreq: 'weekly' },
+  { path: '/products', priority: '0.9', changefreq: 'monthly' },
+  { path: '/industries', priority: '0.9', changefreq: 'monthly' },
+  ...serviceIds.map((id) => ({
+    path: `/services/${id}`,
+    priority: '0.8',
+    changefreq: 'monthly',
+  })),
+]
 
 const today = new Date().toISOString().split('T')[0]
 
-const xml = `<?xml version="1.0" encoding="UTF-8"?>
+const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${paths
   .map(
-    (path) => `  <url>
-    <loc>${siteUrl}${path === '/' ? '' : path}</loc>
+    ({ path, priority, changefreq }) => `  <url>
+    <loc>${siteUrl}${path === '/' ? '/' : path}</loc>
     <lastmod>${today}</lastmod>
-    <changefreq>${path === '/' ? 'weekly' : 'monthly'}</changefreq>
-    <priority>${path === '/' ? '1.0' : path.startsWith('/services/') ? '0.8' : '0.9'}</priority>
+    <changefreq>${changefreq}</changefreq>
+    <priority>${priority}</priority>
   </url>`,
   )
   .join('\n')}
 </urlset>
 `
 
-const outputPath = resolve(__dirname, '../public/sitemap.xml')
-writeFileSync(outputPath, xml, 'utf8')
-console.log(`Sitemap written to ${outputPath} (${paths.length} URLs)`)
+const robotsTxt = `User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+
+Sitemap: ${siteUrl}/sitemap.xml
+`
+
+const publicDir = resolve(__dirname, '../public')
+writeFileSync(resolve(publicDir, 'sitemap.xml'), sitemapXml, 'utf8')
+writeFileSync(resolve(publicDir, 'robots.txt'), robotsTxt, 'utf8')
+console.log(`Sitemap written (${paths.length} URLs) → ${siteUrl}`)
+console.log(`robots.txt written → ${siteUrl}/sitemap.xml`)

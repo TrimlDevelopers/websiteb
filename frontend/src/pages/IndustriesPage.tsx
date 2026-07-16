@@ -13,6 +13,8 @@ import Button from '../components/ui/Button'
 import ContactCTA from '../components/home/ContactCTA'
 import AnimateIn from '../components/ui/AnimateIn'
 import SEO from '../components/seo/SEO'
+import { pageMeta } from '../utils/seo'
+import { breadcrumbSchema, webPageSchema } from '../utils/structuredData'
 
 const iconMap: Record<string, typeof Factory> = {
   factory: Factory,
@@ -29,9 +31,20 @@ export default function IndustriesPage() {
   return (
     <>
       <SEO
-        title="Industries We Serve"
-        description="Industry-specific software for manufacturing, logistics, healthcare, education, retail, finance, and startups — tailored to your operational needs."
+        title={pageMeta.industries.title}
+        description={pageMeta.industries.description}
         path="/industries"
+        jsonLd={[
+          webPageSchema({
+            path: '/industries',
+            name: pageMeta.industries.title,
+            description: pageMeta.industries.description,
+          }),
+          breadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'Industries', path: '/industries' },
+          ]),
+        ]}
       />
       <section className="section-pad overflow-x-clip bg-white">
         <div className="site-container min-w-0">
@@ -59,8 +72,11 @@ export default function IndustriesPage() {
                       <img
                         src={industry.image}
                         alt={`${industry.title} — industry solutions by Tribound Tech`}
+                        width={800}
+                        height={450}
                         className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
                         loading="lazy"
+                        decoding="async"
                       />
                     </div>
                     <div className="flex flex-1 flex-col p-4 sm:p-5 lg:p-6">

@@ -7,6 +7,7 @@ import {
   type EnquiryStatus,
   updateEnquiryStatus,
 } from '../api/adminEnquiries'
+import SEO from '../components/seo/SEO'
 
 type StatusFilter = EnquiryStatus | 'All'
 type SortOption = 'newest' | 'oldest'
@@ -131,6 +132,12 @@ export default function AdminEnquiriesPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">
+      <SEO
+        title="Enquiry Management"
+        description="Internal enquiry management dashboard for Tribound Tech."
+        path="/admin/enquiries"
+        noindex
+      />
       <header className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6">
           <p className="text-xs font-semibold uppercase tracking-wide text-brand-600">

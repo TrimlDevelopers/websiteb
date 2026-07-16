@@ -6,17 +6,17 @@ import WhyTriML from '../components/home/WhyTriML'
 import DevelopmentProcess from '../components/home/DevelopmentProcess'
 import ContactCTA from '../components/home/ContactCTA'
 import SEO from '../components/seo/SEO'
-import { company } from '../data/content'
-import { organizationSchema, websiteSchema } from '../utils/structuredData'
+import { pageMeta } from '../utils/seo'
+import { homeJsonLd } from '../utils/structuredData'
 
 export default function HomePage() {
   return (
     <>
       <SEO
-        title="Custom Software & AI Solutions"
-        description={`${company.name} — ${company.tagline} We build custom software with AI, microservices, and automation to streamline operations and drive growth.`}
+        title={pageMeta.home.title}
+        description={pageMeta.home.description}
         path="/"
-        jsonLd={[organizationSchema(), websiteSchema()]}
+        jsonLd={homeJsonLd()}
       />
       <Hero />
       <ServicesOverview />

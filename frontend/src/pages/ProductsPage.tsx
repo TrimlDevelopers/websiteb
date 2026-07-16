@@ -5,6 +5,8 @@ import Button from '../components/ui/Button'
 import ContactCTA from '../components/home/ContactCTA'
 import AnimateIn from '../components/ui/AnimateIn'
 import SEO from '../components/seo/SEO'
+import { pageMeta } from '../utils/seo'
+import { breadcrumbSchema, webPageSchema } from '../utils/structuredData'
 
 const iconMap: Record<string, typeof Wrench> = {
   wrench: Wrench,
@@ -16,9 +18,20 @@ export default function ProductsPage() {
   return (
     <>
       <SEO
-        title="Software Products & Solutions"
-        description="Ready-to-deploy platforms including TriMaint CMMS, AI Vision Analytics, and Business Automation Suite for manufacturing and operations."
+        title={pageMeta.products.title}
+        description={pageMeta.products.description}
         path="/products"
+        jsonLd={[
+          webPageSchema({
+            path: '/products',
+            name: pageMeta.products.title,
+            description: pageMeta.products.description,
+          }),
+          breadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'Solutions', path: '/products' },
+          ]),
+        ]}
       />
       <section className="section-pad overflow-x-clip bg-white">
         <div className="site-container min-w-0">

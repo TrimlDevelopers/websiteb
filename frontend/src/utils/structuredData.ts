@@ -1,13 +1,25 @@
-import { company } from '../data/content'
-import { absoluteUrl, getSiteUrl } from './seo'
+import { company, services, socialLinks } from '../data/content'
+import { absoluteUrl, defaultDescription, getSiteUrl, SITE_NAME } from './seo'
+
+const sameAs = socialLinks
+  .map((link) => link.href)
+  .filter((href) => href.startsWith('http') && !href.includes('linkedin.com/') && href !== 'https://linkedin.com' && href !== 'https://twitter.com' && href !== 'https://github.com' && href !== 'https://youtube.com')
+
+/** Prefer real profiles when available; otherwise omit placeholder generic roots. */
+function resolvedSameAs(): string[] {
+  if (sameAs.length > 0) return sameAs
+  return []
+}
 
 export function organizationSchema() {
   return {
     '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: company.name,
+    '@type': ['Organization', 'Corporation'],
+    name: SITE_NAME,
+    legalName: SITE_NAME,
     url: getSiteUrl(),
     logo: absoluteUrl('/favicon.svg'),
+    image: absoluteUrl('/og-image.png'),
     description: company.footerDescription,
     email: company.email,
     telephone: company.phone,
@@ -17,7 +29,80 @@ export function organizationSchema() {
       addressRegion: 'Maharashtra',
       addressCountry: 'IN',
     },
-    sameAs: [],
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: company.phone,
+      contactType: 'customer service',
+      email: company.email,
+      areaServed: 'IN',
+      availableLanguage: ['English', 'Hindi', 'Marathi'],
+    },
+    sameAs: resolvedSameAs(),
+    knowsAbout: [
+      'Custom Software Development',
+      'Website Development',
+      'AI Solutions',
+      'Business Automation',
+      'ERP Development',
+      'Cloud Solutions',
+    ],
+  }
+}
+
+export function softwareCompanySchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    name: SITE_NAME,
+    url: getSiteUrl(),
+    description: defaultDescription,
+    image: absoluteUrl('/og-image.png'),
+    telephone: company.phone,
+    email: company.email,
+    priceRange: '$$',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Kolhapur',
+      addressRegion: 'Maharashtra',
+      addressCountry: 'IN',
+    },
+    areaServed: {
+      '@type': 'Country',
+      name: 'India',
+    },
+    serviceType: services.map((s) => s.title),
+  }
+}
+
+export function localBusinessSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    '@id': `${getSiteUrl()}/#localbusiness`,
+    name: SITE_NAME,
+    url: getSiteUrl(),
+    image: absoluteUrl('/og-image.png'),
+    description: company.positioning,
+    telephone: company.phone,
+    email: company.email,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'Kolhapur',
+      addressLocality: 'Kolhapur',
+      addressRegion: 'Maharashtra',
+      addressCountry: 'IN',
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: 16.705,
+      longitude: 74.2433,
+    },
+    openingHoursSpecification: {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '09:30',
+      closes: '18:30',
+    },
   }
 }
 
@@ -25,9 +110,59 @@ export function websiteSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: company.name,
+    '@id': `${getSiteUrl()}/#website`,
+    name: SITE_NAME,
     url: getSiteUrl(),
     description: company.positioning,
+    publisher: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      url: getSiteUrl(),
+    },
+    inLanguage: 'en-IN',
+  }
+}
+
+export function webPageSchema(options: {
+  path: string
+  name: string
+  description: string
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': absoluteUrl(options.path),
+    url: absoluteUrl(options.path),
+    name: options.name,
+    description: options.description,
+    isPartOf: {
+      '@type': 'WebSite',
+      '@id': `${getSiteUrl()}/#website`,
+      name: SITE_NAME,
+      url: getSiteUrl(),
+    },
+    about: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+    },
+    inLanguage: 'en-IN',
+  }
+}
+
+export function contactPageSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    '@id': absoluteUrl('/#contact'),
+    url: absoluteUrl('/#contact'),
+    name: `Contact ${SITE_NAME}`,
+    description: `Contact ${SITE_NAME} for custom software, AI, automation, and cloud solutions.`,
+    mainEntity: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      email: company.email,
+      telephone: company.phone,
+    },
   }
 }
 
@@ -44,7 +179,7 @@ export function serviceSchema(service: {
     description: service.description,
     provider: {
       '@type': 'Organization',
-      name: company.name,
+      name: SITE_NAME,
       url: getSiteUrl(),
     },
     areaServed: 'IN',
@@ -64,4 +199,19 @@ export function breadcrumbSchema(items: Array<{ name: string; path: string }>) {
       item: absoluteUrl(item.path),
     })),
   }
+}
+
+export function homeJsonLd() {
+  return [
+    organizationSchema(),
+    softwareCompanySchema(),
+    localBusinessSchema(),
+    websiteSchema(),
+    webPageSchema({
+      path: '/',
+      name: `${SITE_NAME} | Custom Software, AI & Automation`,
+      description: defaultDescription,
+    }),
+    contactPageSchema(),
+  ]
 }
