@@ -73,3 +73,11 @@ export function apiGet<T>(path: string, options?: RequestInit): Promise<T> {
 export function apiPost<T>(path: string, json?: JsonBody, options?: RequestInit): Promise<T> {
   return apiRequest<T>(path, { ...options, method: 'POST', json })
 }
+
+export function apiPatch<T>(path: string, json?: JsonBody, options?: RequestInit): Promise<T> {
+  return apiRequest<T>(path, { ...options, method: 'PATCH', json })
+}
+
+export function apiDelete<T>(path: string, options?: RequestInit): Promise<T> {
+  return apiRequest<T>(path, { ...options, method: 'DELETE' })
+}

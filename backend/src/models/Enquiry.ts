@@ -1,6 +1,9 @@
-import { Schema, model, type InferSchemaType } from 'mongoose'
+import { Schema, model, type HydratedDocument, type InferSchemaType } from 'mongoose'
 
-const contactEnquirySchema = new Schema(
+export const ENQUIRY_STATUSES = ['New', 'Contacted', 'Closed'] as const
+export type EnquiryStatus = (typeof ENQUIRY_STATUSES)[number]
+
+const enquirySchema = new Schema(
   {
     name: {
       type: String,
@@ -35,19 +38,17 @@ const contactEnquirySchema = new Schema(
     },
     status: {
       type: String,
-      enum: ['New', 'In Progress', 'Closed'],
+      enum: ENQUIRY_STATUSES,
       default: 'New',
     },
   },
   {
     timestamps: true,
+    collection: 'Enquiries',
   },
 )
 
-export type ContactEnquiry = InferSchemaType<typeof contactEnquirySchema> & {
-  _id: Schema.Types.ObjectId
-  createdAt: Date
-  updatedAt: Date
-}
+export type EnquiryAttrs = InferSchemaType<typeof enquirySchema>
+export type EnquiryDocument = HydratedDocument<EnquiryAttrs>
 
-export const ContactEnquiryModel = model('ContactEnquiry', contactEnquirySchema)
+export const EnquiryModel = model('Enquiry', enquirySchema)

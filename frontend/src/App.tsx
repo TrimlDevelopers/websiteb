@@ -5,10 +5,12 @@ import ServicesPage from './pages/ServicesPage'
 import ServiceDetailPage from './pages/ServiceDetailPage'
 import ProductsPage from './pages/ProductsPage'
 import IndustriesPage from './pages/IndustriesPage'
+import AdminEnquiriesPage from './pages/AdminEnquiriesPage'
 
 export default function App() {
   return (
     <Routes>
+      <Route path="/admin/enquiries" element={<AdminEnquiriesPage />} />
       <Route element={<Layout />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/services" element={<ServicesPage />} />

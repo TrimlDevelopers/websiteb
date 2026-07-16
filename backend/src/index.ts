@@ -3,10 +3,8 @@ import cors from 'cors'
 import express from 'express'
 import { getAllowedOrigins, getCorsOptions } from './config/cors.js'
 import { connectDatabase } from './config/db.js'
+import adminEnquiriesRouter from './routes/adminEnquiries.js'
 import contactRouter from './routes/contact.js'
-import socketTestRouter from './routes/socketTest.js'
-import testSmtpRouter from './routes/testSmtp.js'
-import { EmailService } from './services/emailService.js'
 
 const app = express()
 
@@ -24,8 +22,7 @@ app.get('/api/health', (_req, res) => {
 })
 
 app.use('/api/contact', contactRouter)
-app.use('/api/socket-test', socketTestRouter)
-app.use('/api/test-smtp', testSmtpRouter)
+app.use('/api/admin', adminEnquiriesRouter)
 
 async function start(): Promise<void> {
   console.log('[server] Connecting to MongoDB...')
@@ -38,9 +35,6 @@ async function start(): Promise<void> {
     console.log(`[server] RENDER=${process.env.RENDER ?? 'undefined'}`)
     console.log(`[server] CORS origins: ${getAllowedOrigins().join(', ')}`)
   })
-
-  // One-time SMTP check — never blocks request handlers
-  void EmailService.initAtStartup()
 }
 
 start().catch((error) => {

@@ -47,7 +47,7 @@ export default function ContactCTA() {
 
       setSuccessMessage(
         data.message ||
-          'Thank you for contacting Tribound Tech. Your enquiry has been received successfully.',
+          'Thank you! Your enquiry has been received successfully. Our team will contact you shortly.',
       )
       setSubmitted(true)
     } catch (err) {
