@@ -111,7 +111,7 @@ export function getAboutSuggestions(): ChatSuggestion[] {
   return [
     { id: 'qr:services', label: 'Our services' },
     { id: 'qr:contact', label: 'Contact info' },
-    { id: 'nav:/#about', label: 'About us' },
+    { id: 'nav:/about', label: 'About us' },
     menuSuggestion(),
   ]
 }
@@ -149,7 +149,7 @@ export function getQuickReplyResponse(id: QuickReplyId): ChatMessage {
         role: 'bot',
         text: contactInfoText,
         links: [
-          { label: 'Contact form', href: '/#contact' },
+          { label: 'Contact form', href: '/contact' },
           { label: 'Call us', href: `tel:${company.phone.replace(/\s/g, '')}` },
           { label: 'Email us', href: `mailto:${company.email}` },
         ],
@@ -160,7 +160,7 @@ export function getQuickReplyResponse(id: QuickReplyId): ChatMessage {
         id: createMessageId('bot'),
         role: 'bot',
         text: `We'd love to discuss your project. Share your requirements through our contact form or call ${company.phone}. We offer a free consultation to understand your goals and provide a tailored estimate.`,
-        links: [{ label: 'Free consultation', href: '/#contact' }],
+        links: [{ label: 'Free consultation', href: '/contact' }],
         suggestions: getQuoteFollowUpSuggestions(),
       }
     default:
@@ -306,7 +306,7 @@ export function resolveSuggestion(suggestion: ChatSuggestion): SuggestionResult 
         text: 'Opening the contact form — share your project details and we will get back to you shortly.',
         suggestions: getQuoteFollowUpSuggestions().filter((item) => item.id !== 'action:contact-form'),
       },
-      navigate: '/#contact',
+      navigate: '/contact',
     }
   }
 
@@ -317,7 +317,7 @@ export function resolveSuggestion(suggestion: ChatSuggestion): SuggestionResult 
         id: createMessageId('bot'),
         role: 'bot',
         text: 'Pricing depends on project scope, timeline, and technology stack. We provide a free consultation first, then share a tailored estimate.',
-        links: [{ label: 'Get a free consultation', href: '/#contact' }],
+        links: [{ label: 'Get a free consultation', href: '/contact' }],
         suggestions: getQuoteFollowUpSuggestions(),
       },
     }
@@ -407,7 +407,7 @@ export function getBotReply(input: string): ChatMessage {
       id,
       role: 'bot',
       text: 'Pricing depends on project scope, timeline, and technology stack. We provide a free consultation first, then share a tailored estimate.',
-      links: [{ label: 'Get a free consultation', href: '/#contact' }],
+      links: [{ label: 'Get a free consultation', href: '/contact' }],
       suggestions: getQuoteFollowUpSuggestions(),
     }
   }
@@ -418,7 +418,7 @@ export function getBotReply(input: string): ChatMessage {
       role: 'bot',
       text: contactInfoText,
       links: [
-        { label: 'Contact form', href: '/#contact' },
+        { label: 'Contact form', href: '/contact' },
         { label: 'Email us', href: `mailto:${company.email}` },
         { label: 'Call us', href: `tel:${company.phone.replace(/\s/g, '')}` },
       ],
@@ -432,8 +432,8 @@ export function getBotReply(input: string): ChatMessage {
       role: 'bot',
       text: `${company.name} — ${company.tagline}\n\n${company.positioning}`,
       links: [
-        { label: 'About us', href: '/#about' },
-        { label: 'Contact us', href: '/#contact' },
+        { label: 'About us', href: '/about' },
+        { label: 'Contact us', href: '/contact' },
       ],
       suggestions: getAboutSuggestions(),
     }
@@ -462,7 +462,7 @@ export function getBotReply(input: string): ChatMessage {
     role: 'bot',
     text: "I didn't quite catch that. Try asking about our services, solutions, pricing, or contact info — or pick an option below.",
     links: [
-      { label: 'Contact our team', href: '/#contact' },
+      { label: 'Contact our team', href: '/contact' },
       { label: 'Browse services', href: '/services' },
     ],
     suggestions: getRootSuggestions(),

@@ -18,6 +18,7 @@ export default function HomePage() {
         title={pageMeta.home.title}
         description={pageMeta.home.description}
         path="/"
+        keywords={pageMeta.home.keywords}
         jsonLd={homeJsonLd()}
       />
       <Hero />

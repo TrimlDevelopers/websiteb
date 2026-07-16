@@ -93,7 +93,7 @@ export default function Footer() {
                 Schedule a free consultation with our team today.
               </p>
             </div>
-            <Button href="/#contact" variant="white" className="w-full sm:w-auto sm:shrink-0">
+            <Button href="/contact" variant="white" className="w-full sm:w-auto sm:shrink-0">
               <span className="sm:hidden">Free Consultation</span>
               <span className="hidden sm:inline">Schedule a Free Consultation</span>
               <ArrowRight size={16} />

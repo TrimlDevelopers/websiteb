@@ -25,8 +25,8 @@ export const socialLinks = [
 
 export const footerLinks = {
   legal: [
-    { label: 'Privacy Policy', href: '/#contact' },
-    { label: 'Terms & Conditions', href: '/#contact' },
+    { label: 'Privacy Policy', href: '/privacy' },
+    { label: 'Terms & Conditions', href: '/terms' },
   ],
 }
 
@@ -35,8 +35,8 @@ export const navLinks = [
   { label: 'Services', href: '/services' },
   { label: 'Solutions', href: '/products' },
   { label: 'Industries', href: '/industries' },
-  { label: 'About Us', href: '/#about' },
-  { label: 'Contact', href: '/#contact' },
+  { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
 ]
 
 export const heroFeatures = [

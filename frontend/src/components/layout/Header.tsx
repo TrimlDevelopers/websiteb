@@ -40,7 +40,7 @@ export default function Header() {
         </nav>
 
         <div className="hidden shrink-0 md:block">
-          <Button href="#contact">
+          <Button href="/contact">
             <span className="hidden xl:inline">Get in Touch</span>
             <span className="xl:hidden">Contact</span>
             <ArrowRight size={16} />
@@ -83,7 +83,7 @@ export default function Header() {
                 </NavLink>
               ))}
               <div className="mt-3 border-t border-slate-100 pt-4">
-                <Button href="#contact" className="w-full" onClick={() => setMobileOpen(false)}>
+                <Button href="/contact" className="w-full" onClick={() => setMobileOpen(false)}>
                   Get in Touch
                   <ArrowRight size={16} />
                 </Button>

@@ -153,16 +153,45 @@ export function contactPageSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'ContactPage',
-    '@id': absoluteUrl('/#contact'),
-    url: absoluteUrl('/#contact'),
+    '@id': absoluteUrl('/contact'),
+    url: absoluteUrl('/contact'),
     name: `Contact ${SITE_NAME}`,
-    description: `Contact ${SITE_NAME} for custom software, AI, automation, and cloud solutions.`,
+    description: `Contact ${SITE_NAME} in Kolhapur for custom software, AI, automation, ERP, and cloud solutions.`,
     mainEntity: {
       '@type': 'Organization',
       name: SITE_NAME,
       email: company.email,
       telephone: company.phone,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Kolhapur',
+        addressRegion: 'Maharashtra',
+        addressCountry: 'IN',
+      },
+      contactPoint: {
+        '@type': 'ContactPoint',
+        telephone: company.phone,
+        contactType: 'sales',
+        email: company.email,
+        areaServed: 'IN',
+        availableLanguage: ['English', 'Hindi', 'Marathi'],
+      },
     },
+  }
+}
+
+export function faqSchema(items: Array<{ question: string; answer: string }>) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
   }
 }
 

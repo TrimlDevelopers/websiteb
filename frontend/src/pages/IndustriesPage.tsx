@@ -91,7 +91,7 @@ export default function IndustriesPage() {
                         {industry.description}
                       </p>
                       <div className="mt-5">
-                        <Button href="/#contact" variant="outline" className="w-full sm:w-auto">
+                        <Button href="/contact" variant="outline" className="w-full sm:w-auto">
                           Discuss Your Needs
                         </Button>
                       </div>

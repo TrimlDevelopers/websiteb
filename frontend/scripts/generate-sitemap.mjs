@@ -20,6 +20,11 @@ const paths = [
   { path: '/services', priority: '0.9', changefreq: 'weekly' },
   { path: '/products', priority: '0.9', changefreq: 'monthly' },
   { path: '/industries', priority: '0.9', changefreq: 'monthly' },
+  { path: '/about', priority: '0.8', changefreq: 'monthly' },
+  { path: '/contact', priority: '0.9', changefreq: 'monthly' },
+  { path: '/faq', priority: '0.8', changefreq: 'monthly' },
+  { path: '/privacy', priority: '0.3', changefreq: 'yearly' },
+  { path: '/terms', priority: '0.3', changefreq: 'yearly' },
   ...serviceIds.map((id) => ({
     path: `/services/${id}`,
     priority: '0.8',

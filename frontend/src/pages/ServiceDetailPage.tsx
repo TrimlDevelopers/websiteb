@@ -93,7 +93,7 @@ export default function ServiceDetailPage() {
                   Transform your operations with our {service.heroTitle} solutions. Our team will
                   tailor an approach to your goals.
                 </p>
-                <Button href="/#contact" className="mt-8 w-full sm:w-auto">
+                <Button href="/contact" className="mt-8 w-full sm:w-auto">
                   Get Started
                   <ArrowRight size={16} />
                 </Button>

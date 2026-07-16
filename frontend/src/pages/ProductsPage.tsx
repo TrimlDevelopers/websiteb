@@ -110,7 +110,7 @@ export default function ProductsPage() {
                       </div>
                       <div className="mt-6">
                         <Button
-                          href="/#contact"
+                          href="/contact"
                           variant={product.featured ? 'primary' : 'outline'}
                           className="w-full"
                         >
