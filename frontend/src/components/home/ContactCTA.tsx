@@ -1,8 +1,9 @@
 import { useState, type FormEvent } from 'react'
-import { Mail, Phone, Globe, MapPin, Send, ArrowRight } from 'lucide-react'
+import { Mail, Phone, Globe, MapPin, Send, ArrowRight, Loader2 } from 'lucide-react'
 import { ApiError } from '../../api/client'
 import { submitContactEnquiry } from '../../api/contact'
 import { company, services } from '../../data/content'
+import { useBackendStatus } from '../../hooks/useBackendStatus'
 import Button from '../ui/Button'
 import AnimateIn from '../ui/AnimateIn'
 
@@ -17,13 +18,18 @@ const inputClass =
   'box-border w-full rounded-lg border border-white/10 bg-navy-900/60 px-3 py-2 text-sm text-white outline-none focus:border-brand-500/50 disabled:opacity-60'
 
 export default function ContactCTA() {
+  const { isOnline, isWaking, isUnavailable, retry } = useBackendStatus()
   const [submitted, setSubmitted] = useState(false)
   const [successMessage, setSuccessMessage] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  const fieldsDisabled = isUnavailable || loading
+  const submitDisabled = !isOnline || loading
+
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    if (!isOnline) return
     setLoading(true)
     setError('')
 
@@ -140,7 +146,7 @@ export default function ContactCTA() {
                         id="name"
                         name="name"
                         required
-                        disabled={loading}
+                        disabled={fieldsDisabled}
                         className={inputClass}
                         placeholder="Your name"
                       />
@@ -154,7 +160,7 @@ export default function ContactCTA() {
                         name="email"
                         type="email"
                         required
-                        disabled={loading}
+                        disabled={fieldsDisabled}
                         className={inputClass}
                         placeholder="your@email.com"
                       />
@@ -170,7 +176,7 @@ export default function ContactCTA() {
                         id="phone"
                         name="phone"
                         type="tel"
-                        disabled={loading}
+                        disabled={fieldsDisabled}
                         className={inputClass}
                         placeholder="+91 ..."
                       />
@@ -185,7 +191,7 @@ export default function ContactCTA() {
                       <input
                         id="company"
                         name="company"
-                        disabled={loading}
+                        disabled={fieldsDisabled}
                         className={inputClass}
                         placeholder="Your company"
                       />
@@ -199,7 +205,7 @@ export default function ContactCTA() {
                     <select
                       id="service"
                       name="service"
-                      disabled={loading}
+                      disabled={fieldsDisabled}
                       defaultValue=""
                       className={`${inputClass} appearance-none bg-[length:1rem] bg-[right_0.75rem_center] bg-no-repeat pr-9`}
                     >
@@ -230,20 +236,42 @@ export default function ContactCTA() {
                       name="message"
                       rows={3}
                       required
-                      disabled={loading}
+                      disabled={fieldsDisabled}
                       className={`${inputClass} resize-none`}
                       placeholder="Tell us about your project..."
                     />
                   </div>
+                  {isWaking ? (
+                    <p
+                      className="flex items-center gap-2 text-sm text-brand-300"
+                      role="status"
+                      aria-live="polite"
+                    >
+                      <Loader2 size={16} className="shrink-0 animate-spin" aria-hidden />
+                      Starting our secure server... Please wait a few seconds.
+                    </p>
+                  ) : null}
+                  {isUnavailable ? (
+                    <div className="space-y-2" role="alert">
+                      <p className="text-sm text-red-400">
+                        Our server is currently unavailable. Please try again in a few minutes.
+                      </p>
+                      <Button type="button" variant="secondary" className="w-full" onClick={retry}>
+                        Retry
+                      </Button>
+                    </div>
+                  ) : null}
                   {error ? (
                     <p className="text-sm text-red-400" role="alert">
                       {error}
                     </p>
                   ) : null}
-                  <Button type="submit" className="w-full" disabled={loading}>
-                    {loading ? 'Sending...' : 'Send Message'}
-                    <Send size={16} />
-                  </Button>
+                  {!isUnavailable ? (
+                    <Button type="submit" className="w-full" disabled={submitDisabled}>
+                      {loading ? 'Sending...' : 'Send Message'}
+                      <Send size={16} />
+                    </Button>
+                  ) : null}
                 </form>
               )}
             </div>
