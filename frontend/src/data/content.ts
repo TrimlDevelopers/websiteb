@@ -80,7 +80,6 @@ export const services = [
       'Cost-effective solutions',
       'Ongoing maintenance and support',
     ],
-    technologies: ['React', 'Node.js', 'Python', 'Java', 'Docker', 'Kubernetes', 'AWS', 'PostgreSQL'],
   },
   {
     id: 'website-development',
@@ -110,7 +109,6 @@ export const services = [
       'Easy content updates',
       'Ongoing maintenance and support',
     ],
-    technologies: ['React', 'Next.js', 'Node.js', 'WordPress', 'Tailwind CSS', 'AWS', 'Vercel'],
   },
   {
     id: 'mobile-app-development',
@@ -140,7 +138,6 @@ export const services = [
       'Higher customer retention',
       'Ongoing maintenance and support',
     ],
-    technologies: ['React Native', 'Flutter', 'Swift', 'Kotlin', 'Firebase', 'Node.js', 'AWS'],
   },
   {
     id: 'microservices',
@@ -170,7 +167,6 @@ export const services = [
       'Cloud cost optimization',
       'Ongoing maintenance and support',
     ],
-    technologies: ['Docker', 'Kubernetes', 'Node.js', 'Java', 'PostgreSQL', 'Redis', 'AWS', 'gRPC'],
   },
   {
     id: 'business-automation',
@@ -200,7 +196,6 @@ export const services = [
       'Better process visibility',
       'Ongoing maintenance and support',
     ],
-    technologies: ['Python', 'FastAPI', 'Node.js', 'PostgreSQL', 'Zapier', 'Power Automate', 'AWS'],
   },
   {
     id: 'data-analytics',
@@ -230,7 +225,6 @@ export const services = [
       'Better resource allocation',
       'Ongoing maintenance and support',
     ],
-    technologies: ['Python', 'PostgreSQL', 'React', 'Power BI', 'FastAPI', 'AWS', 'Apache Spark'],
   },
 ]
 

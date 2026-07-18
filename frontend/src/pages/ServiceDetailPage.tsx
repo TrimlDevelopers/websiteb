@@ -103,31 +103,6 @@ export default function ServiceDetailPage() {
         </div>
       </section>
 
-      <section className="section-pad border-y border-slate-200 bg-white">
-        <div className="site-container min-w-0">
-          <AnimateIn className="mb-8 text-center sm:mb-10">
-            <h2 className="page-heading font-bold text-navy-900">Capabilities &amp; Integration</h2>
-            <p className="section-lead section-lead--center">
-              We combine secure deployment, integrations, and reporting so you get results you can
-              trust and verify.
-            </p>
-          </AnimateIn>
-
-          <AnimateIn delay={80}>
-            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 lg:justify-start">
-              {service.technologies.map((tech) => (
-                <span
-                  key={tech}
-                  className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm transition-all hover:border-brand-500/30 hover:text-brand-600 sm:px-4 sm:py-2.5 sm:text-sm"
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </AnimateIn>
-        </div>
-      </section>
-
       <section className="section-pad bg-surface-light">
         <div className="site-container min-w-0">
           <AnimateIn className="mb-8 text-center sm:mb-10">

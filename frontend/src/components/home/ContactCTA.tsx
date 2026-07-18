@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { Mail, Phone, Globe, MapPin, Send, ArrowRight, Loader2 } from 'lucide-react'
+import { Mail, Phone, Globe, MapPin, Send, ArrowRight, Loader2, Building2 } from 'lucide-react'
 import { ApiError } from '../../api/client'
 import { submitContactEnquiry } from '../../api/contact'
 import { company, services } from '../../data/content'
@@ -8,6 +8,7 @@ import Button from '../ui/Button'
 import AnimateIn from '../ui/AnimateIn'
 
 const contactItems = [
+  { icon: Building2, text: company.name, href: undefined },
   { icon: Phone, text: company.phone, href: `tel:${company.phone.replace(/\s/g, '')}` },
   { icon: Mail, text: company.email, href: `mailto:${company.email}` },
   { icon: Globe, text: company.website, href: `https://${company.website}` },
@@ -17,7 +18,13 @@ const contactItems = [
 const inputClass =
   'box-border w-full rounded-lg border border-white/10 bg-navy-900/60 px-3 py-2 text-sm text-white outline-none focus:border-brand-500/50 disabled:opacity-60'
 
-export default function ContactCTA() {
+interface ContactCTAProps {
+  /** `page` = dedicated /contact layout; `section` = home/other page CTA */
+  variant?: 'section' | 'page'
+}
+
+export default function ContactCTA({ variant = 'section' }: ContactCTAProps) {
+  const isPage = variant === 'page'
   const { isOnline, isWaking, isUnavailable, retry } = useBackendStatus()
   const [submitted, setSubmitted] = useState(false)
   const [successMessage, setSuccessMessage] = useState('')
@@ -70,19 +77,24 @@ export default function ContactCTA() {
   return (
     <section
       id="contact"
-      className="dark-section w-full overflow-x-clip scroll-mt-[calc(3.5rem+env(safe-area-inset-top,0px))] py-8 sm:scroll-mt-[calc(4rem+env(safe-area-inset-top,0px))] sm:py-11 lg:py-14"
+      className={`dark-section w-full overflow-x-clip scroll-mt-[calc(3.5rem+env(safe-area-inset-top,0px))] sm:scroll-mt-[calc(4rem+env(safe-area-inset-top,0px))] ${
+        isPage ? 'py-10 sm:py-12 lg:py-16' : 'py-8 sm:py-11 lg:py-14'
+      }`}
     >
       <div className="site-container w-full min-w-0">
         <div className="flex w-full min-w-0 flex-col gap-5 lg:grid lg:grid-cols-2 lg:items-start lg:gap-10 xl:gap-14">
           <AnimateIn animation="fade-up" className="w-full min-w-0">
             <div className="text-center lg:text-left">
-              <p className="section-label mb-1.5 text-brand-300 sm:mb-2">Contact Us</p>
+              <p className="section-label mb-1.5 text-brand-300 sm:mb-2">
+                {isPage ? 'Get in Touch' : 'Contact Us'}
+              </p>
               <h2 className="text-xl font-bold text-white sm:text-2xl lg:text-3xl xl:text-4xl">
-                Let&apos;s Build the Future Together
+                {isPage ? 'Send us a message' : "Let's Build the Future Together"}
               </h2>
               <p className="mx-auto mt-2 max-w-lg text-sm leading-relaxed text-gray-400 sm:mt-3 sm:text-base lg:mx-0 lg:max-w-none">
-                Ready to transform your business? Reach out and we&apos;ll schedule a free consultation
-                to discuss your project.
+                {isPage
+                  ? 'Share your project details and we will schedule a free consultation with clear next steps — usually within one business day.'
+                  : 'Ready to transform your business? Reach out and we\'ll schedule a free consultation to discuss your project.'}
               </p>
             </div>
 
@@ -117,12 +129,24 @@ export default function ContactCTA() {
               })}
             </div>
 
-            <div className="mt-4 hidden sm:mt-5 sm:block">
-              <Button href="#contact" variant="primary" className="w-full sm:w-auto">
-                Request a Consultation
-                <ArrowRight size={16} />
-              </Button>
-            </div>
+            {!isPage ? (
+              <div className="mt-4 hidden sm:mt-5 sm:block">
+                <Button href="#contact" variant="primary" className="w-full sm:w-auto">
+                  Request a Consultation
+                  <ArrowRight size={16} />
+                </Button>
+              </div>
+            ) : (
+              <p className="mt-4 hidden text-sm text-gray-500 sm:mt-5 sm:block">
+                Prefer email? Reach us at{' '}
+                <a
+                  href={`mailto:${company.email}`}
+                  className="font-medium text-brand-300 hover:text-brand-200"
+                >
+                  {company.email}
+                </a>
+              </p>
+            )}
           </AnimateIn>
 
           <AnimateIn animation="fade-up" delay={100} className="w-full min-w-0">
