@@ -3,7 +3,7 @@ import { services } from '../data/content'
 export const SITE_NAME = 'Tribound Tech'
 export const SITE_AUTHOR = 'Tribound Tech'
 export const SITE_KEYWORDS =
-  'custom software development Kolhapur, website development company Maharashtra, AI solutions India, ERP development, business automation software, cloud solutions, Tribound Tech'
+  'IT company in Kolhapur, software company in Kolhapur, website development company Kolhapur, custom software development Kolhapur, mobile app development Kolhapur, AI solutions Kolhapur, ERP software Kolhapur, business automation Maharashtra, Tribound Tech'
 
 /** Production canonical host (HTTPS, no trailing slash). */
 export const DEFAULT_SITE_URL = 'https://triboundtech.com'
@@ -30,24 +30,24 @@ export const serviceRoutes = services.map((service) => `/services/${service.id}`
 export const allRoutes = [...staticRoutes, ...serviceRoutes]
 
 export const defaultDescription =
-  'Tribound Tech in Kolhapur builds custom software, websites, AI solutions, ERP, business automation, and cloud systems for growing businesses across India.'
+  'Tribound Tech is an IT and software company in Kolhapur building custom software, websites, mobile apps, AI solutions, ERP, automation, and cloud systems.'
 
 export const defaultOgImage = '/og-image.png'
 
 export const pageMeta = {
   home: {
-    title: 'Custom Software Development Company in Kolhapur',
+    title: 'IT Company in Kolhapur | Software, Web & AI',
     description:
-      'Tribound Tech builds custom software, AI solutions, websites, ERP, and business automation for companies in Kolhapur, Maharashtra, and across India. Free consultation.',
+      'Tribound Tech is an IT company in Kolhapur offering custom software, website and mobile app development, AI solutions, ERP, automation, and cloud services.',
     keywords:
-      'custom software development Kolhapur, software company Maharashtra, AI automation India, Tribound Tech',
+      'IT company in Kolhapur, software company in Kolhapur, web development company Kolhapur, app development Kolhapur, AI company Kolhapur, Tribound Tech',
   },
   services: {
-    title: 'Software Development Services | AI, Web, ERP & Automation',
+    title: 'Software Development Services in Kolhapur',
     description:
-      'Explore Tribound Tech services: custom software with AI, website development, mobile apps, microservices, business automation, ERP, and data analytics.',
+      'Software development services in Kolhapur: custom software, websites, mobile apps, AI, ERP, cloud systems, automation, microservices, and data analytics.',
     keywords:
-      'software development services, website development, ERP development, AI solutions, business automation',
+      'software development company Kolhapur, website development Kolhapur, mobile app development Kolhapur, ERP development, AI solutions, business automation',
   },
   products: {
     title: 'Business Software Products & Automation Solutions',
@@ -62,22 +62,22 @@ export const pageMeta = {
     keywords: 'manufacturing software, logistics software, healthcare IT, retail software India',
   },
   about: {
-    title: 'About Tribound Tech | Software Company in Kolhapur',
+    title: 'About Our IT Company in Kolhapur',
     description:
-      'Learn about Tribound Tech — a Kolhapur software company delivering custom software, websites, AI, ERP, and cloud solutions with practical, measurable results.',
-    keywords: 'about Tribound Tech, software company Kolhapur, Maharashtra IT company',
+      'Meet Tribound Tech, an IT and software company in Kolhapur delivering custom software, websites, mobile apps, AI, ERP, automation, and cloud solutions.',
+    keywords: 'about Tribound Tech, IT company in Kolhapur, software company Kolhapur, Maharashtra IT company',
   },
   contact: {
-    title: 'Contact Tribound Tech | Free Software Consultation',
+    title: 'Contact Our IT Company in Kolhapur',
     description:
-      'Contact Tribound Tech in Kolhapur for custom software, website development, AI, and automation. Call +91 94048 93174 or email info@triboundtech.com.',
-    keywords: 'contact Tribound Tech, software company Kolhapur contact, hire developers Maharashtra',
+      'Contact Tribound Tech in Kolhapur for custom software, website and app development, AI, ERP, and automation. Request a free software consultation.',
+    keywords: 'contact IT company Kolhapur, contact Tribound Tech, software company Kolhapur contact, hire developers Maharashtra',
   },
   faq: {
-    title: 'FAQ | Website Cost, Custom Software, ERP & AI',
+    title: 'Kolhapur IT & Software Development FAQ',
     description:
-      'Answers on website development cost, custom software vs SaaS, ERP development, AI automation, and working with Tribound Tech in Kolhapur.',
-    keywords: 'website development cost India, custom software vs SaaS, ERP development FAQ',
+      'Answers about IT services in Kolhapur, website and app development, custom software, ERP, AI automation, project cost, timelines, and support.',
+    keywords: 'IT services Kolhapur, website development cost India, custom software Kolhapur, ERP development FAQ, AI automation',
   },
   privacy: {
     title: 'Privacy Policy',

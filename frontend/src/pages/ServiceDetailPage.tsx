@@ -20,15 +20,20 @@ export default function ServiceDetailPage() {
 
   const Icon = getServiceIcon(service.icon)
   const otherServices = services.filter((s) => s.id !== service.id)
-  const description = truncateMeta(service.description || service.shortDescription)
+  const seoTitle = `${service.heroTitle} in Kolhapur`
+  const description = truncateMeta(
+    `Tribound Tech provides ${service.heroTitle.toLowerCase()} services in Kolhapur, Maharashtra. ${service.shortDescription}`,
+  )
+  const keywords = `${service.heroTitle} Kolhapur, ${service.heroTitle} company in Kolhapur, software development Maharashtra, Tribound Tech`
 
   return (
     <>
       <SEO
-        title={service.title}
+        title={seoTitle}
         description={description}
         path={`/services/${service.id}`}
         type="article"
+        keywords={keywords}
         jsonLd={[
           serviceSchema(service),
           webPageSchema({
@@ -50,11 +55,14 @@ export default function ServiceDetailPage() {
               <Icon size={28} strokeWidth={1.75} />
             </div>
             <div className="min-w-0 flex-1">
-              <h1 className="page-heading font-bold text-navy-900">{service.heroTitle}</h1>
+              <h1 className="page-heading font-bold text-navy-900">
+                {service.heroTitle} in Kolhapur
+              </h1>
               <p className="page-subheading section-lead">{service.shortDescription}</p>
               <AnimateIn animation="fade-up" className="mt-5 lg:mt-6">
                 <p className="text-sm leading-relaxed text-slate-600 sm:text-base lg:max-w-4xl">
-                  {service.intro}
+                  {service.intro} We work with businesses in Kolhapur, across Maharashtra, and
+                  throughout India.
                 </p>
               </AnimateIn>
             </div>

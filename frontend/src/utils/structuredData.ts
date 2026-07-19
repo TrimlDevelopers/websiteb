@@ -1,6 +1,12 @@
 import { company, services, socialLinks } from '../data/content'
 import { absoluteUrl, defaultDescription, getSiteUrl, SITE_NAME } from './seo'
 
+const areasServed = [
+  { '@type': 'City', name: 'Kolhapur' },
+  { '@type': 'State', name: 'Maharashtra' },
+  { '@type': 'Country', name: 'India' },
+]
+
 const sameAs = socialLinks
   .map((link) => link.href)
   .filter((href) => href.startsWith('http') && !href.includes('linkedin.com/') && href !== 'https://linkedin.com' && href !== 'https://twitter.com' && href !== 'https://github.com' && href !== 'https://youtube.com')
@@ -16,6 +22,7 @@ export function organizationSchema() {
     '@context': 'https://schema.org',
     '@type': ['Organization', 'Corporation'],
     name: SITE_NAME,
+    alternateName: 'Tribound Tech Kolhapur',
     legalName: SITE_NAME,
     url: getSiteUrl(),
     logo: absoluteUrl('/favicon.svg'),
@@ -35,16 +42,18 @@ export function organizationSchema() {
       contactType: 'customer service',
       email: company.email,
       areaServed: 'IN',
-      availableLanguage: ['English', 'Hindi', 'Marathi'],
+      availableLanguage: ['English'],
     },
     sameAs: resolvedSameAs(),
     knowsAbout: [
       'Custom Software Development',
       'Website Development',
+      'Mobile App Development',
       'AI Solutions',
       'Business Automation',
       'ERP Development',
       'Cloud Solutions',
+      'Data Analytics',
     ],
   }
 }
@@ -59,17 +68,13 @@ export function softwareCompanySchema() {
     image: absoluteUrl('/og-image.png'),
     telephone: company.phone,
     email: company.email,
-    priceRange: '$$',
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Kolhapur',
       addressRegion: 'Maharashtra',
       addressCountry: 'IN',
     },
-    areaServed: {
-      '@type': 'Country',
-      name: 'India',
-    },
+    areaServed: areasServed,
     serviceType: services.map((s) => s.title),
   }
 }
@@ -85,23 +90,12 @@ export function localBusinessSchema() {
     description: company.positioning,
     telephone: company.phone,
     email: company.email,
+    areaServed: areasServed,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'Kolhapur',
       addressLocality: 'Kolhapur',
       addressRegion: 'Maharashtra',
       addressCountry: 'IN',
-    },
-    geo: {
-      '@type': 'GeoCoordinates',
-      latitude: 16.705,
-      longitude: 74.2433,
-    },
-    openingHoursSpecification: {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-      opens: '09:30',
-      closes: '18:30',
     },
   }
 }
@@ -174,7 +168,7 @@ export function contactPageSchema() {
         contactType: 'sales',
         email: company.email,
         areaServed: 'IN',
-        availableLanguage: ['English', 'Hindi', 'Marathi'],
+        availableLanguage: ['English'],
       },
     },
   }
@@ -211,7 +205,7 @@ export function serviceSchema(service: {
       name: SITE_NAME,
       url: getSiteUrl(),
     },
-    areaServed: 'IN',
+    areaServed: areasServed,
     url: absoluteUrl(`/services/${service.id}`),
     serviceType: service.shortDescription,
   }
@@ -238,9 +232,8 @@ export function homeJsonLd() {
     websiteSchema(),
     webPageSchema({
       path: '/',
-      name: `${SITE_NAME} | Custom Software, AI & Automation`,
+      name: 'IT Company in Kolhapur | Software, Web & AI',
       description: defaultDescription,
     }),
-    contactPageSchema(),
   ]
 }

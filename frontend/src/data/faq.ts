@@ -44,9 +44,23 @@ export const faqs: FaqItem[] = [
   },
   {
     id: 'kolhapur-software-company',
-    question: 'Is Tribound Tech a software company in Kolhapur?',
+    question: 'Is Tribound Tech an IT and software company in Kolhapur?',
     answer:
-      'Yes. Tribound Tech is based in Kolhapur, Maharashtra, India. We deliver custom software development, website development, AI solutions, ERP, business automation, and cloud solutions for local businesses and clients across India.',
+      'Yes. Tribound Tech is an IT and software company based in Kolhapur, Maharashtra, India. We deliver custom software development, website development, mobile apps, AI solutions, ERP, business automation, data analytics, and cloud solutions for local businesses and clients across India.',
+    category: 'local',
+  },
+  {
+    id: 'kolhapur-it-services',
+    question: 'What IT services do you provide in Kolhapur?',
+    answer:
+      'Our Kolhapur IT services include custom software, responsive business websites, mobile application development, ERP modules, AI solutions, workflow automation, microservices, cloud deployment, dashboards, and data analytics. We begin with a consultation to recommend the right approach for your business goals and budget.',
+    category: 'local',
+  },
+  {
+    id: 'outside-kolhapur',
+    question: 'Do you work with clients outside Kolhapur?',
+    answer:
+      'Yes. Our team is based in Kolhapur and works remotely with businesses across Maharashtra and India. Discovery meetings, project updates, demonstrations, and support can be handled online, while local meetings can be arranged when appropriate.',
     category: 'local',
   },
   {

@@ -1,27 +1,23 @@
 export const company = {
   name: 'Tribound Tech',
-  tagline: 'Intelligent Software. Automated Operations.',
-  heroBadge: 'AI • AUTOMATION • INNOVATION',
-  heroTitle: 'Transforming Businesses Through Intelligent',
-  heroTitleAccent: 'Technology',
+  tagline: 'Kolhapur IT Company for Software, Web & AI.',
+  heroBadge: 'KOLHAPUR • SOFTWARE • AI • AUTOMATION',
+  heroTitle: 'IT & Software Company',
+  heroTitleAccent: 'in Kolhapur',
   heroSubtitle:
-    'We build custom software with AI, microservices, and automation systems that help organizations streamline operations, reduce downtime and drive growth.',
+    'Tribound Tech builds custom software, business websites, mobile apps, AI solutions, ERP systems, and automation for companies in Kolhapur and across India.',
   positioning:
-    'We help businesses automate operations, reduce manual work, and improve efficiency through custom software with AI, microservices, and cloud-native applications.',
+    'Kolhapur-based IT and software company helping businesses improve efficiency through custom software, websites, mobile apps, AI, ERP, automation, and cloud solutions.',
   footerDescription:
-    'Custom software with AI, microservices, and cloud-native systems for modern businesses.',
+    'IT and software development company in Kolhapur delivering custom software, websites, mobile apps, AI, ERP, automation, and cloud solutions.',
   email: 'info@triboundtech.com',
   phone: '+91 94048 93174',
   website: 'triboundtech.com',
   location: 'Kolhapur, Maharashtra, India',
 }
 
-export const socialLinks = [
-  { label: 'LinkedIn', href: 'https://linkedin.com' },
-  { label: 'Twitter', href: 'https://twitter.com' },
-  { label: 'GitHub', href: 'https://github.com' },
-  { label: 'YouTube', href: 'https://youtube.com' },
-]
+/** Add only verified company profile URLs; generic social-network roots hurt user trust. */
+export const socialLinks: Array<{ label: string; href: string }> = []
 
 export const footerLinks = {
   legal: [
@@ -36,6 +32,7 @@ export const navLinks = [
   { label: 'Solutions', href: '/products' },
   { label: 'Industries', href: '/industries' },
   { label: 'About', href: '/about' },
+  { label: 'FAQ', href: '/faq' },
   { label: 'Contact', href: '/contact' },
 ]
 
@@ -410,8 +407,8 @@ export const whyTriML = [
     icon: 'clock',
   },
   {
-    title: '24/7 Support',
-    description: 'Always-on assistance when you need it',
+    title: 'Reliable Support',
+    description: 'Post-launch maintenance and assistance',
     icon: 'headphones',
   },
   {

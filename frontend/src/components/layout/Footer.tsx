@@ -134,23 +134,25 @@ export default function Footer() {
           <p className="mt-2 max-w-sm text-sm leading-relaxed text-gray-500">
             {company.footerDescription}
           </p>
-          <div className="mt-5">
-            <p className="mb-3 text-xs font-bold uppercase tracking-wider text-white">Follow Us</p>
-            <div className="flex flex-wrap gap-2">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={social.label}
-                  className="flex h-11 w-11 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-gray-400 transition-all hover:border-brand-500/40 hover:bg-brand-500/10 hover:text-brand-300"
-                >
-                  <SocialIcon label={social.label} />
-                </a>
-              ))}
+          {socialLinks.length > 0 ? (
+            <div className="mt-5">
+              <p className="mb-3 text-xs font-bold uppercase tracking-wider text-white">Follow Us</p>
+              <div className="flex flex-wrap gap-2">
+                {socialLinks.map((social) => (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.label}
+                    className="flex h-11 w-11 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-gray-400 transition-all hover:border-brand-500/40 hover:bg-brand-500/10 hover:text-brand-300"
+                  >
+                    <SocialIcon label={social.label} />
+                  </a>
+                ))}
+              </div>
             </div>
-          </div>
+          ) : null}
           </div>
 
           {/* Link columns — accordions on mobile, grid on desktop */}
@@ -217,13 +219,13 @@ export default function Footer() {
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
             {footerLinks.legal.map((link) => (
-              <a
+              <Link
                 key={link.label}
-                href={link.href}
+                to={link.href}
                 className="text-xs text-gray-500 transition-colors hover:text-brand-300"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
         </div>

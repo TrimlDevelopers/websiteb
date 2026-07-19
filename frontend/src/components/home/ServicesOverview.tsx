@@ -12,7 +12,7 @@ export default function ServicesOverview() {
           <div className="page-header__content min-w-0">
             <p className="section-label mb-2">Our Core Services</p>
             <h2 className="page-heading font-bold text-navy-900">
-              Solutions Designed for Your Business Growth
+              Software, Web, Mobile App & AI Solutions
             </h2>
           </div>
           <Link

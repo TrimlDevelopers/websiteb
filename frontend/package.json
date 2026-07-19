@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && node scripts/generate-sitemap.mjs && vite build",
+    "build": "tsc && node scripts/generate-sitemap.mjs && vite build && node scripts/prerender.mjs",
     "preview": "vite preview"
   },
   "devDependencies": {

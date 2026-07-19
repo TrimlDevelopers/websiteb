@@ -2,9 +2,9 @@ import { company } from './content'
 
 export const aboutContent = {
   label: 'About Tribound Tech',
-  title: 'Software company in Kolhapur building intelligent business systems',
+  title: 'IT and software company in Kolhapur',
   description:
-    'Tribound Tech is a Kolhapur, Maharashtra based software company delivering custom software development, website development, AI solutions, ERP, business automation, and cloud solutions for growing organizations.',
+    'Tribound Tech is a Kolhapur, Maharashtra-based technology company delivering custom software, website and mobile app development, AI solutions, ERP, business automation, and cloud systems.',
   story: [
     `${company.name} helps businesses replace manual processes with reliable software. From Kolhapur, we partner with manufacturers, service companies, and startups across India to design, build, and support production-grade systems.`,
     'Our team focuses on practical outcomes: faster operations, fewer errors, better visibility, and software your staff actually uses. We combine modern web technologies with AI and automation where they create measurable value.',

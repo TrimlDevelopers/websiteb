@@ -20,7 +20,8 @@ function AnimateIn({
   once = true,
 }: AnimateInProps) {
   const ref = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(false)
+  // Start visible so prerendered HTML and crawlers always receive readable content.
+  const [visible, setVisible] = useState(true)
 
   useEffect(() => {
     const el = ref.current
@@ -30,6 +31,15 @@ function AnimateIn({
       setVisible(true)
       return
     }
+
+    const rect = el.getBoundingClientRect()
+    const inView = rect.top < window.innerHeight * 0.92 && rect.bottom > 0
+    if (inView) {
+      setVisible(true)
+      return
+    }
+
+    setVisible(false)
 
     const observer = new IntersectionObserver(
       ([entry]) => {

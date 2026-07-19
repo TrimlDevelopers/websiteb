@@ -50,11 +50,13 @@ export default function FaqSection({
                     />
                   </button>
                 </h3>
-                {open ? (
-                  <div className="border-t border-slate-100 px-4 py-3 text-sm leading-relaxed text-slate-600 sm:px-5 sm:py-4">
-                    {item.answer}
-                  </div>
-                ) : null}
+                <div
+                  className={`border-t border-slate-100 px-4 py-3 text-sm leading-relaxed text-slate-600 sm:px-5 sm:py-4 ${
+                    open ? '' : 'hidden'
+                  }`}
+                >
+                  {item.answer}
+                </div>
               </article>
             )
           })}

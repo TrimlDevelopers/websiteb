@@ -50,8 +50,21 @@ export default function AboutPage() {
             ))}
           </div>
 
-          <p className="mt-6 text-sm font-medium text-navy-900">
-            NAP: {company.name} · {company.location} · {company.phone} · {company.email}
+          <p className="mt-6 text-sm text-slate-600">
+            <span className="font-medium text-navy-900">{company.name}</span>
+            {' · '}
+            {company.location}
+            {' · '}
+            <a
+              className="font-medium text-brand-600 hover:underline"
+              href={`tel:${company.phone.replace(/\s/g, '')}`}
+            >
+              {company.phone}
+            </a>
+            {' · '}
+            <a className="font-medium text-brand-600 hover:underline" href={`mailto:${company.email}`}>
+              {company.email}
+            </a>
           </p>
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2">

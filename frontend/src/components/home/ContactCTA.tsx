@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { Mail, Phone, Globe, MapPin, Send, ArrowRight, Loader2, Building2 } from 'lucide-react'
 import { ApiError } from '../../api/client'
 import { submitContactEnquiry } from '../../api/contact'
@@ -26,17 +26,26 @@ interface ContactCTAProps {
 export default function ContactCTA({ variant = 'section' }: ContactCTAProps) {
   const isPage = variant === 'page'
   const { isOnline, isWaking, isUnavailable, retry } = useBackendStatus()
+  const [clientReady, setClientReady] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [successMessage, setSuccessMessage] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const fieldsDisabled = isUnavailable || loading
-  const submitDisabled = !isOnline || loading
+  useEffect(() => {
+    setClientReady(true)
+  }, [])
+
+  // Keep prerendered HTML clean for Google: hide wake/error UI until the client mounts.
+  const waking = clientReady && isWaking
+  const unavailable = clientReady && isUnavailable
+  const online = !clientReady || isOnline
+  const fieldsDisabled = unavailable || loading
+  const submitDisabled = !online || loading
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (!isOnline) return
+    if (!online) return
     setLoading(true)
     setError('')
 
@@ -265,7 +274,7 @@ export default function ContactCTA({ variant = 'section' }: ContactCTAProps) {
                       placeholder="Tell us about your project..."
                     />
                   </div>
-                  {isWaking ? (
+                  {waking ? (
                     <p
                       className="flex items-center gap-2 text-sm text-brand-300"
                       role="status"
@@ -275,7 +284,7 @@ export default function ContactCTA({ variant = 'section' }: ContactCTAProps) {
                       Starting our secure server... Please wait a few seconds.
                     </p>
                   ) : null}
-                  {isUnavailable ? (
+                  {unavailable ? (
                     <div className="space-y-2" role="alert">
                       <p className="text-sm text-red-400">
                         Our server is currently unavailable. Please try again in a few minutes.
@@ -290,7 +299,7 @@ export default function ContactCTA({ variant = 'section' }: ContactCTAProps) {
                       {error}
                     </p>
                   ) : null}
-                  {!isUnavailable ? (
+                  {!unavailable ? (
                     <Button type="submit" className="w-full" disabled={submitDisabled}>
                       {loading ? 'Sending...' : 'Send Message'}
                       <Send size={16} />

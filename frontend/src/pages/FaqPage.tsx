@@ -34,7 +34,7 @@ export default function FaqPage() {
           <AnimateIn className="page-header mx-auto max-w-3xl text-center">
             <p className="section-label mb-2">Help centre</p>
             <h1 className="page-heading font-bold text-navy-900">
-              Software development FAQs
+              Kolhapur IT &amp; Software Development FAQs
             </h1>
             <p className="page-subheading section-lead mx-auto mt-3">{faqPageIntro}</p>
             <div className="mt-6 flex flex-wrap justify-center gap-3">
