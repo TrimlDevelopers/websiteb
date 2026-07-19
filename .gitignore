@@ -12,6 +12,13 @@ dist
 dist-ssr
 *.local
 .env
+.env.*
+!.env.example
+
+# Generated Unsplash masters (optimized AVIF/WebP are committed)
+frontend/public/images/**/*-source.jpg
+frontend/public/images/**/*-source.jpeg
+frontend/public/images/**/*-source.webp
 
 # Editor directories and files
 .vscode/*

@@ -1,5 +1,6 @@
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -18,6 +19,8 @@ interface BackendStatusContextValue {
   isOnline: boolean
   isWaking: boolean
   isUnavailable: boolean
+  /** Begin health checks only when a consumer needs the API (contact form intent). */
+  ensureReady: () => void
   retry: () => void
   retryIntervalMs: number
   maxRetries: number
@@ -28,23 +31,24 @@ const BackendStatusContext = createContext<BackendStatusContextValue | null>(nul
 export function BackendStatusProvider({ children }: { children: ReactNode }) {
   const [status, setStatus] = useState<BackendStatus>(() => backendWakeup.getStatus())
 
-  useEffect(() => {
-    const unsubscribe = backendWakeup.subscribe(setStatus)
+  useEffect(() => backendWakeup.subscribe(setStatus), [])
+
+  const ensureReady = useCallback(() => {
     backendWakeup.start()
-    return unsubscribe
   }, [])
 
   const value = useMemo<BackendStatusContextValue>(
     () => ({
       status,
       isOnline: status === 'online',
-      isWaking: status === 'sleeping' || status === 'waking',
+      isWaking: status === 'waking',
       isUnavailable: status === 'error',
+      ensureReady,
       retry: () => backendWakeup.retry(),
       retryIntervalMs: WAKEUP_RETRY_INTERVAL_MS,
       maxRetries: WAKEUP_MAX_RETRIES,
     }),
-    [status],
+    [status, ensureReady],
   )
 
   return (

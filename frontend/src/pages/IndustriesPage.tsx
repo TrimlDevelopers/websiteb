@@ -12,6 +12,7 @@ import { industries } from '../data/content'
 import Button from '../components/ui/Button'
 import ContactCTA from '../components/home/ContactCTA'
 import AnimateIn from '../components/ui/AnimateIn'
+import ResponsiveImage from '../components/ui/ResponsiveImage'
 import SEO from '../components/seo/SEO'
 import { pageMeta } from '../utils/seo'
 import { breadcrumbSchema, webPageSchema } from '../utils/structuredData'
@@ -69,15 +70,11 @@ export default function IndustriesPage() {
                     className="service-card card-hover flex h-full w-full flex-col overflow-hidden rounded-2xl"
                   >
                     <div className="aspect-[16/9] overflow-hidden sm:aspect-[2/1]">
-                      <img
-                        src={industry.image}
+                      <ResponsiveImage
+                        image={industry.image}
                         alt={`${industry.title} — industry solutions by Tribound Tech`}
-                        width={640}
-                        height={360}
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-                        loading="lazy"
-                        decoding="async"
                       />
                     </div>
                     <div className="flex flex-1 flex-col p-4 sm:p-5 lg:p-6">

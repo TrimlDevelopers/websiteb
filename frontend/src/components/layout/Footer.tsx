@@ -13,11 +13,11 @@ import {
 import {
   company,
   navLinks,
-  services,
   trustFeatures,
   socialLinks,
   footerLinks,
 } from '../../data/content'
+import { serviceNavItems } from '../../data/serviceNav'
 import Logo from '../ui/Logo'
 import Button from '../ui/Button'
 import FooterAccordion from '../ui/FooterAccordion'
@@ -115,7 +115,7 @@ export default function Footer() {
                 </div>
                 <div className="min-w-0">
                   <p className="text-sm font-semibold text-white">{f.title}</p>
-                  <p className="text-xs text-gray-500">{f.subtitle}</p>
+                  <p className="text-xs text-gray-400">{f.subtitle}</p>
                 </div>
               </div>
               </AnimateIn>
@@ -131,7 +131,7 @@ export default function Footer() {
           <div className="mb-6 border-b border-white/10 pb-8 lg:mb-0 lg:border-0 lg:pb-0">
           <Logo light />
           <p className="mt-4 max-w-sm text-sm font-medium text-gray-300">{company.tagline}</p>
-          <p className="mt-2 max-w-sm text-sm leading-relaxed text-gray-500">
+          <p className="mt-2 max-w-sm text-sm leading-relaxed text-gray-300">
             {company.footerDescription}
           </p>
           {socialLinks.length > 0 ? (
@@ -163,7 +163,7 @@ export default function Footer() {
 
           <FooterAccordion title="Our Services">
             <LinkList
-              items={services.map((s) => ({
+              items={serviceNavItems.map((s) => ({
                 label: s.navLabel,
                 href: `/services/${s.id}`,
               }))}
@@ -214,7 +214,7 @@ export default function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-white/5 bg-navy-950">
         <div className="site-container flex flex-col items-center gap-3 py-5 sm:flex-row sm:justify-between">
-          <p className="text-center text-xs leading-relaxed text-gray-600 sm:text-left">
+          <p className="text-center text-xs leading-relaxed text-gray-400 sm:text-left">
             &copy; {new Date().getFullYear()} {company.name}. All rights reserved.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
@@ -222,7 +222,7 @@ export default function Footer() {
               <Link
                 key={link.label}
                 to={link.href}
-                className="text-xs text-gray-500 transition-colors hover:text-brand-300"
+                className="text-xs text-gray-400 transition-colors hover:text-brand-300"
               >
                 {link.label}
               </Link>

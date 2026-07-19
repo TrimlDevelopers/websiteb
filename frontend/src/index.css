@@ -1,7 +1,22 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter-latin-var.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  /* Approximate system-ui metrics to reduce CLS on font swap */
+  size-adjust: 107%;
+  ascent-override: 90%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --color-brand-50: #eff6ff;
   --color-brand-100: #dbeafe;
   --color-brand-200: #bfdbfe;
@@ -446,24 +461,21 @@ section {
   }
 }
 
+/* Transform-only hero motion — keep opacity at 1 so LCP text is never delayed. */
 @keyframes hero-fade-up {
   from {
-    opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(16px);
   }
   to {
-    opacity: 1;
     transform: translateY(0);
   }
 }
 
 @keyframes hero-scale-in {
   from {
-    opacity: 0;
-    transform: scale(0.94) translateY(16px);
+    transform: scale(0.97) translateY(12px);
   }
   to {
-    opacity: 1;
     transform: scale(1) translateY(0);
   }
 }
@@ -498,18 +510,26 @@ section {
 }
 
 .hero-enter {
-  animation: hero-fade-up 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
+  opacity: 1;
+  animation: hero-fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .hero-enter-1 { animation-delay: 0.05s; }
-.hero-enter-2 { animation-delay: 0.15s; }
-.hero-enter-3 { animation-delay: 0.25s; }
-.hero-enter-4 { animation-delay: 0.35s; }
-.hero-enter-5 { animation-delay: 0.45s; }
-.hero-enter-6 { animation-delay: 0.55s; }
+.hero-enter-2 { animation-delay: 0.1s; }
+.hero-enter-3 { animation-delay: 0.15s; }
+.hero-enter-4 { animation-delay: 0.2s; }
+.hero-enter-5 { animation-delay: 0.25s; }
+.hero-enter-6 { animation-delay: 0.3s; }
 
 .hero-dashboard-enter {
-  animation: hero-scale-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+  opacity: 1;
+  animation: hero-scale-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+
+/* Distant homepage sections — skip rendering work until near viewport */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 520px;
 }
 
 .animate-in {

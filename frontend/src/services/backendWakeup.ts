@@ -2,14 +2,14 @@ import { API_BASE_URL } from '../api/client'
 
 export type BackendStatus = 'sleeping' | 'waking' | 'online' | 'error'
 
-/** Delay between failed health checks (ms). */
-export const WAKEUP_RETRY_INTERVAL_MS = 5_000
+/** Base delay between failed health checks (ms); grows with exponential backoff. */
+export const WAKEUP_RETRY_INTERVAL_MS = 2_000
 
 /** Maximum health-check attempts before marking the backend unavailable. */
-export const WAKEUP_MAX_RETRIES = 12
+export const WAKEUP_MAX_RETRIES = 10
 
-/** Per-request timeout — Render cold starts can take a while. */
-export const WAKEUP_REQUEST_TIMEOUT_MS = 45_000
+/** Per-request timeout — shorter than cold-start worst case; retries cover the rest. */
+export const WAKEUP_REQUEST_TIMEOUT_MS = 12_000
 
 type StatusListener = (status: BackendStatus) => void
 
@@ -24,12 +24,10 @@ function log(...args: unknown[]): void {
 }
 
 function resolveHealthUrl(): string {
-  // Prefer configured API origin; fall back to relative path (Vite proxy) or known Render URL.
+  // Same origin resolution as api/client — never invent a second backend host.
   const base =
     API_BASE_URL ||
-    (typeof window !== 'undefined' && window.location.hostname === 'localhost'
-      ? ''
-      : 'https://websiteb-backend.onrender.com')
+    (typeof window !== 'undefined' && window.location.hostname === 'localhost' ? '' : '')
   return `${base}/api/health`
 }
 
@@ -44,9 +42,16 @@ async function pingHealth(signal: AbortSignal): Promise<boolean> {
   return res.status === 200
 }
 
+function backoffMs(attempt: number): number {
+  const exp = Math.min(WAKEUP_RETRY_INTERVAL_MS * 2 ** Math.max(0, attempt - 1), 15_000)
+  const jitter = Math.floor(Math.random() * 400)
+  return exp + jitter
+}
+
 /**
  * Singleton wake-up service for Render Free cold starts.
  * Only one wake loop runs app-wide; all subscribers share the same status.
+ * Callers must invoke start() on contact intent — it does not auto-start on import.
  */
 class BackendWakeupService {
   private status: BackendStatus = 'sleeping'
@@ -113,11 +118,12 @@ class BackendWakeupService {
 
   private scheduleRetry(): void {
     this.clearRetryTimer()
-    log('Retrying...')
+    const delay = backoffMs(this.attempt)
+    log('Retrying in', delay, 'ms')
     this.retryTimer = setTimeout(() => {
       this.retryTimer = null
       void this.runAttempt()
-    }, WAKEUP_RETRY_INTERVAL_MS)
+    }, delay)
   }
 
   private async runAttempt(): Promise<void> {

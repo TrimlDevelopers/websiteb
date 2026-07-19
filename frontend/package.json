@@ -9,7 +9,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && node scripts/generate-sitemap.mjs && vite build && node scripts/prerender.mjs",
+    "optimize-assets": "node scripts/optimize-assets.mjs",
+    "build": "tsc && node scripts/verify-render-routes.mjs && node scripts/generate-sitemap.mjs && vite build && node scripts/prerender.mjs",
     "preview": "vite preview"
   },
   "devDependencies": {
@@ -17,6 +18,7 @@
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.3",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.3.1",
     "tsx": "^4.23.1",
     "typescript": "~6.0.2",

@@ -33,7 +33,7 @@ export default function Logo({ light = false }: LogoProps) {
           light ? 'text-white' : 'text-navy-900'
         }`}
       >
-        Tri<span className="text-brand-500">bound</span>{' '}
+        Tri<span className={light ? 'text-brand-300' : 'text-brand-700'}>bound</span>{' '}
         <span
           className={`font-semibold max-[360px]:hidden ${light ? 'text-gray-300' : 'text-slate-600'}`}
         >

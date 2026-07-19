@@ -11,6 +11,59 @@ interface AnimateInProps {
   once?: boolean
 }
 
+const ROOT_MARGIN = '0px 0px -24px 0px'
+const THRESHOLD = 0.08
+const OBSERVER_KEY = `${ROOT_MARGIN}::${THRESHOLD}`
+
+type ElementCallbacks = {
+  onIntersect: () => void
+  onLeave?: () => void
+}
+
+const sharedObservers = new Map<string, IntersectionObserver>()
+const observedElements = new WeakMap<Element, Set<ElementCallbacks>>()
+
+function getSharedObserver(): IntersectionObserver {
+  let observer = sharedObservers.get(OBSERVER_KEY)
+  if (observer) return observer
+
+  observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        const callbacks = observedElements.get(entry.target)
+        if (!callbacks) continue
+        for (const cb of callbacks) {
+          if (entry.isIntersecting) cb.onIntersect()
+          else cb.onLeave?.()
+        }
+      }
+    },
+    { threshold: THRESHOLD, rootMargin: ROOT_MARGIN },
+  )
+
+  sharedObservers.set(OBSERVER_KEY, observer)
+  return observer
+}
+
+function observeElement(el: Element, callbacks: ElementCallbacks): () => void {
+  const observer = getSharedObserver()
+  let set = observedElements.get(el)
+  if (!set) {
+    set = new Set()
+    observedElements.set(el, set)
+  }
+  set.add(callbacks)
+  observer.observe(el)
+
+  return () => {
+    set?.delete(callbacks)
+    if (set && set.size === 0) {
+      observer.unobserve(el)
+      observedElements.delete(el)
+    }
+  }
+}
+
 function AnimateIn({
   children,
   animation = 'fade-up',
@@ -20,7 +73,7 @@ function AnimateIn({
   once = true,
 }: AnimateInProps) {
   const ref = useRef<HTMLDivElement>(null)
-  // Start visible so prerendered HTML and crawlers always receive readable content.
+  // Visible through SSR and hydration; IO decides whether below-fold content should animate in.
   const [visible, setVisible] = useState(true)
 
   useEffect(() => {
@@ -32,29 +85,22 @@ function AnimateIn({
       return
     }
 
-    const rect = el.getBoundingClientRect()
-    const inView = rect.top < window.innerHeight * 0.92 && rect.bottom > 0
-    if (inView) {
-      setVisible(true)
-      return
-    }
-
-    setVisible(false)
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true)
-          if (once) observer.unobserve(el)
-        } else if (!once) {
-          setVisible(false)
-        }
+    let settled = false
+    const detach = observeElement(el, {
+      onIntersect: () => {
+        setVisible(true)
+        settled = true
+        if (once) detach()
       },
-      { threshold: 0.08, rootMargin: '0px 0px -24px 0px' },
-    )
+      onLeave: () => {
+        if (once && settled) return
+        // Initial IO callback: keep SSR-visible content if already in view;
+        // only hide elements reported as out of view.
+        setVisible(false)
+      },
+    })
 
-    observer.observe(el)
-    return () => observer.disconnect()
+    return detach
   }, [once])
 
   const style = {

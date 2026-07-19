@@ -1,21 +1,21 @@
-import { Suspense, lazy, type ReactNode } from 'react'
+import { Suspense, lazy, type ComponentType, type ReactNode } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Layout from './components/layout/Layout'
-import AdminProtectedRoute from './components/admin/AdminProtectedRoute'
+import { pageLoaders, type PageKey } from './routes/pageLoaders'
 
-const HomePage = lazy(() => import('./pages/HomePage'))
-const ServicesPage = lazy(() => import('./pages/ServicesPage'))
-const ServiceDetailPage = lazy(() => import('./pages/ServiceDetailPage'))
-const ProductsPage = lazy(() => import('./pages/ProductsPage'))
-const IndustriesPage = lazy(() => import('./pages/IndustriesPage'))
-const AboutPage = lazy(() => import('./pages/AboutPage'))
-const ContactPage = lazy(() => import('./pages/ContactPage'))
-const FaqPage = lazy(() => import('./pages/FaqPage'))
-const PrivacyPage = lazy(() => import('./pages/PrivacyPage'))
-const TermsPage = lazy(() => import('./pages/TermsPage'))
-const AdminLoginPage = lazy(() => import('./pages/AdminLoginPage'))
-const AdminEnquiriesPage = lazy(() => import('./pages/AdminEnquiriesPage'))
-const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
+const HomePage = lazy(pageLoaders.home)
+const ServicesPage = lazy(pageLoaders.services)
+const ServiceDetailPage = lazy(pageLoaders.serviceDetail)
+const ProductsPage = lazy(pageLoaders.products)
+const IndustriesPage = lazy(pageLoaders.industries)
+const AboutPage = lazy(pageLoaders.about)
+const ContactPage = lazy(pageLoaders.contact)
+const FaqPage = lazy(pageLoaders.faq)
+const PrivacyPage = lazy(pageLoaders.privacy)
+const TermsPage = lazy(pageLoaders.terms)
+const AdminLoginPage = lazy(pageLoaders.adminLogin)
+const AdminEnquiriesPage = lazy(pageLoaders.adminEnquiries)
+const NotFoundPage = lazy(pageLoaders.notFound)
 
 function RouteFallback() {
   return (
@@ -33,39 +33,99 @@ function LazyRoute({ children }: { children: ReactNode }) {
   return <Suspense fallback={<RouteFallback />}>{children}</Suspense>
 }
 
-export default function App() {
+interface InitialPage {
+  key: PageKey
+  Component: ComponentType
+}
+
+interface AppProps {
+  /** Preloaded page for the first URL so hydration never swaps prerendered HTML for a fallback. */
+  initialPage?: InitialPage
+}
+
+function PageRoute({
+  pageKey,
+  Lazy,
+  initialPage,
+}: {
+  pageKey: PageKey
+  Lazy: ComponentType
+  initialPage?: InitialPage
+}) {
+  if (initialPage?.key === pageKey) {
+    const SyncPage = initialPage.Component
+    return <SyncPage />
+  }
+
+  return (
+    <LazyRoute>
+      <Lazy />
+    </LazyRoute>
+  )
+}
+
+export default function App({ initialPage }: AppProps) {
   return (
     <Routes>
       <Route
         path="/admin/login"
-        element={
-          <LazyRoute>
-            <AdminLoginPage />
-          </LazyRoute>
-        }
+        element={<PageRoute pageKey="adminLogin" Lazy={AdminLoginPage} initialPage={initialPage} />}
       />
       <Route
         path="/admin/enquiries"
         element={
-          <LazyRoute>
-            <AdminProtectedRoute>
-              <AdminEnquiriesPage />
-            </AdminProtectedRoute>
-          </LazyRoute>
+          <PageRoute pageKey="adminEnquiries" Lazy={AdminEnquiriesPage} initialPage={initialPage} />
         }
       />
       <Route element={<Layout />}>
-        <Route path="/" element={<LazyRoute><HomePage /></LazyRoute>} />
-        <Route path="/services" element={<LazyRoute><ServicesPage /></LazyRoute>} />
-        <Route path="/services/:id" element={<LazyRoute><ServiceDetailPage /></LazyRoute>} />
-        <Route path="/products" element={<LazyRoute><ProductsPage /></LazyRoute>} />
-        <Route path="/industries" element={<LazyRoute><IndustriesPage /></LazyRoute>} />
-        <Route path="/about" element={<LazyRoute><AboutPage /></LazyRoute>} />
-        <Route path="/contact" element={<LazyRoute><ContactPage /></LazyRoute>} />
-        <Route path="/faq" element={<LazyRoute><FaqPage /></LazyRoute>} />
-        <Route path="/privacy" element={<LazyRoute><PrivacyPage /></LazyRoute>} />
-        <Route path="/terms" element={<LazyRoute><TermsPage /></LazyRoute>} />
-        <Route path="*" element={<LazyRoute><NotFoundPage /></LazyRoute>} />
+        <Route
+          path="/"
+          element={<PageRoute pageKey="home" Lazy={HomePage} initialPage={initialPage} />}
+        />
+        <Route
+          path="/services"
+          element={<PageRoute pageKey="services" Lazy={ServicesPage} initialPage={initialPage} />}
+        />
+        <Route
+          path="/services/:id"
+          element={
+            <PageRoute pageKey="serviceDetail" Lazy={ServiceDetailPage} initialPage={initialPage} />
+          }
+        />
+        <Route
+          path="/products"
+          element={<PageRoute pageKey="products" Lazy={ProductsPage} initialPage={initialPage} />}
+        />
+        <Route
+          path="/industries"
+          element={
+            <PageRoute pageKey="industries" Lazy={IndustriesPage} initialPage={initialPage} />
+          }
+        />
+        <Route
+          path="/about"
+          element={<PageRoute pageKey="about" Lazy={AboutPage} initialPage={initialPage} />}
+        />
+        <Route
+          path="/contact"
+          element={<PageRoute pageKey="contact" Lazy={ContactPage} initialPage={initialPage} />}
+        />
+        <Route
+          path="/faq"
+          element={<PageRoute pageKey="faq" Lazy={FaqPage} initialPage={initialPage} />}
+        />
+        <Route
+          path="/privacy"
+          element={<PageRoute pageKey="privacy" Lazy={PrivacyPage} initialPage={initialPage} />}
+        />
+        <Route
+          path="/terms"
+          element={<PageRoute pageKey="terms" Lazy={TermsPage} initialPage={initialPage} />}
+        />
+        <Route
+          path="*"
+          element={<PageRoute pageKey="notFound" Lazy={NotFoundPage} initialPage={initialPage} />}
+        />
       </Route>
     </Routes>
   )

@@ -39,8 +39,8 @@ export default function DashboardMockup() {
                   { label: 'Cost Saved', value: '₹12L' },
                 ].map((m) => (
                   <div key={m.label} className="rounded-lg border border-slate-200 bg-white p-1.5 sm:p-2">
-                    <p className="truncate text-[9px] text-slate-400 sm:text-[10px]">{m.label}</p>
-                    <p className="text-sm font-bold text-brand-500 sm:text-base">{m.value}</p>
+                    <p className="truncate text-[10px] text-slate-600 sm:text-[11px]">{m.label}</p>
+                    <p className="text-sm font-bold text-brand-700 sm:text-base">{m.value}</p>
                   </div>
                 ))}
               </div>
@@ -73,11 +73,11 @@ export default function DashboardMockup() {
                         strokeDasharray="77 100"
                       />
                     </svg>
-                    <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-brand-500 sm:text-xs">
+                    <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-brand-700 sm:text-xs">
                       88%
                     </span>
                   </div>
-                  <p className="text-center text-[10px] text-emerald-500 sm:text-xs">Good</p>
+                  <p className="text-center text-[10px] font-medium text-emerald-700 sm:text-xs">Good</p>
                 </div>
               </div>
             </div>

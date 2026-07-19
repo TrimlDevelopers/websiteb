@@ -18,7 +18,7 @@ const variants: Record<ButtonVariant, string> = {
     'bg-brand-500 text-white hover:bg-brand-600 shadow-md shadow-brand-500/25',
   secondary: 'bg-navy-800 text-white hover:bg-navy-700',
   outline:
-    'border-2 border-brand-500 text-brand-500 bg-transparent hover:bg-brand-50',
+    'border-2 border-brand-700 text-brand-700 bg-transparent hover:bg-brand-50',
   white:
     'border-2 border-white/30 text-white bg-white/10 hover:bg-white/20 backdrop-blur',
 }

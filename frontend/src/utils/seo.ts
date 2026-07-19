@@ -1,4 +1,4 @@
-import { services } from '../data/content'
+import { serviceNavItems } from '../data/serviceNav'
 
 export const SITE_NAME = 'Tribound Tech'
 export const SITE_AUTHOR = 'Tribound Tech'
@@ -25,14 +25,14 @@ export const staticRoutes = [
   '/terms',
 ] as const
 
-export const serviceRoutes = services.map((service) => `/services/${service.id}`)
+export const serviceRoutes = serviceNavItems.map((service) => `/services/${service.id}`)
 
 export const allRoutes = [...staticRoutes, ...serviceRoutes]
 
 export const defaultDescription =
   'Tribound Tech is an IT and software company in Kolhapur building custom software, websites, mobile apps, AI solutions, ERP, automation, and cloud systems.'
 
-export const defaultOgImage = '/og-image.png'
+export const defaultOgImage = '/og-image.svg'
 
 export const pageMeta = {
   home: {

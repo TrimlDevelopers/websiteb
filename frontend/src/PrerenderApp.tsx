@@ -1,4 +1,3 @@
-import { Suspense, type ReactNode } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Layout from './components/layout/Layout'
 import HomePage from './pages/HomePage'
@@ -13,38 +12,26 @@ import PrivacyPage from './pages/PrivacyPage'
 import TermsPage from './pages/TermsPage'
 import NotFoundPage from './pages/NotFoundPage'
 
-function RouteFallback() {
-  return (
-    <div
-      className="flex min-h-[40vh] items-center justify-center text-sm text-slate-500"
-      role="status"
-      aria-live="polite"
-    >
-      Loading…
-    </div>
-  )
-}
-
-function PrerenderRoute({ children }: { children: ReactNode }) {
-  return <Suspense fallback={<RouteFallback />}>{children}</Suspense>
-}
-
-/** Synchronous route tree used only by the build-time static renderer. */
+/**
+ * Synchronous public route tree for build-time prerendering.
+ * Client hydration preloads the matching route module before hydrateRoot
+ * so these trees stay aligned without Suspense fallback flashes.
+ */
 export default function PrerenderApp() {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route path="/" element={<PrerenderRoute><HomePage /></PrerenderRoute>} />
-        <Route path="/services" element={<PrerenderRoute><ServicesPage /></PrerenderRoute>} />
-        <Route path="/services/:id" element={<PrerenderRoute><ServiceDetailPage /></PrerenderRoute>} />
-        <Route path="/products" element={<PrerenderRoute><ProductsPage /></PrerenderRoute>} />
-        <Route path="/industries" element={<PrerenderRoute><IndustriesPage /></PrerenderRoute>} />
-        <Route path="/about" element={<PrerenderRoute><AboutPage /></PrerenderRoute>} />
-        <Route path="/contact" element={<PrerenderRoute><ContactPage /></PrerenderRoute>} />
-        <Route path="/faq" element={<PrerenderRoute><FaqPage /></PrerenderRoute>} />
-        <Route path="/privacy" element={<PrerenderRoute><PrivacyPage /></PrerenderRoute>} />
-        <Route path="/terms" element={<PrerenderRoute><TermsPage /></PrerenderRoute>} />
-        <Route path="*" element={<PrerenderRoute><NotFoundPage /></PrerenderRoute>} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/services" element={<ServicesPage />} />
+        <Route path="/services/:id" element={<ServiceDetailPage />} />
+        <Route path="/products" element={<ProductsPage />} />
+        <Route path="/industries" element={<IndustriesPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/faq" element={<FaqPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/terms" element={<TermsPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   )

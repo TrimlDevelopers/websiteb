@@ -318,7 +318,7 @@ export const industries = [
     description:
       'Manufacturing companies require software solutions to manage production, maintenance, quality control, inventory, and workforce efficiency. Tribound Tech helps manufacturers reduce downtime and automate operations.',
     icon: 'factory',
-    image: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=640&q=70&fm=webp',
+    image: { base: '/images/industries/manufacturing', width: 960, height: 640 },
   },
   {
     id: 'logistics',
@@ -327,7 +327,7 @@ export const industries = [
     description:
       'Logistics businesses need real-time visibility into shipments, warehouses, vehicle tracking, and operational workflows. We provide dashboards, tracking systems, and automation tools.',
     icon: 'truck',
-    image: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=640&q=70&fm=webp',
+    image: { base: '/images/industries/logistics', width: 960, height: 640 },
   },
   {
     id: 'warehousing',
@@ -336,7 +336,7 @@ export const industries = [
     description:
       'Warehouses require inventory management, stock monitoring, barcode systems, and reporting solutions. Our software helps optimize storage and improve inventory accuracy.',
     icon: 'warehouse',
-    image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=640&q=70&fm=webp',
+    image: { base: '/images/industries/warehousing', width: 960, height: 640 },
   },
   {
     id: 'healthcare',
@@ -345,7 +345,7 @@ export const industries = [
     description:
       'Healthcare organizations need patient management systems, appointment scheduling, reporting dashboards, and AI-powered support solutions built for security and scale.',
     icon: 'heart',
-    image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=640&q=70&fm=webp',
+    image: { base: '/images/industries/healthcare', width: 960, height: 640 },
   },
   {
     id: 'education',
@@ -354,7 +354,7 @@ export const industries = [
     description:
       'Educational institutions require student portals, attendance systems, learning management systems, and analytics dashboards to streamline administrative processes.',
     icon: 'graduation',
-    image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=640&q=70&fm=webp',
+    image: { base: '/images/industries/education', width: 960, height: 640 },
   },
   {
     id: 'retail',
@@ -363,7 +363,7 @@ export const industries = [
     description:
       'Retail businesses benefit from inventory management, sales analytics, customer engagement systems, and e-commerce platforms that improve customer experience.',
     icon: 'shopping',
-    image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=640&q=70&fm=webp',
+    image: { base: '/images/industries/retail', width: 960, height: 640 },
   },
   {
     id: 'startups',
@@ -372,7 +372,7 @@ export const industries = [
     description:
       'Startups often need scalable web applications, MVP development, cloud-native architectures, and automation solutions. We help startups launch quickly and scale efficiently.',
     icon: 'rocket',
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=640&q=70&fm=webp',
+    image: { base: '/images/industries/startups', width: 960, height: 640 },
   },
   {
     id: 'finance',
@@ -381,7 +381,7 @@ export const industries = [
     description:
       'Financial organizations need secure, compliant software for reporting, automation, and data analytics while maintaining regulatory standards.',
     icon: 'chart',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=640&q=70&fm=webp',
+    image: { base: '/images/industries/finance', width: 960, height: 640 },
   },
 ]
 

@@ -4,8 +4,10 @@ import { Eye, EyeOff } from 'lucide-react'
 import { adminLogin, fetchAdminMe } from '../api/adminAuth'
 import { ApiError } from '../api/client'
 import SEO from '../components/seo/SEO'
+import { useBackendStatus } from '../hooks/useBackendStatus'
 
 export default function AdminLoginPage() {
+  const { ensureReady } = useBackendStatus()
   const navigate = useNavigate()
   const location = useLocation()
   const from =
@@ -21,6 +23,10 @@ export default function AdminLoginPage() {
   const [checking, setChecking] = useState(true)
   const [error, setError] = useState('')
   const [alreadyAuthed, setAlreadyAuthed] = useState(false)
+
+  useEffect(() => {
+    ensureReady()
+  }, [ensureReady])
 
   useEffect(() => {
     let cancelled = false

@@ -22,11 +22,21 @@ export default function HomePage() {
       />
       <Hero />
       <ServicesOverview />
-      <LocalExpertise />
-      <IndustriesPreview />
-      <RecentProjects />
-      <WhyTriML />
-      <DevelopmentProcess />
+      <div className="cv-auto">
+        <LocalExpertise />
+      </div>
+      <div className="cv-auto">
+        <IndustriesPreview />
+      </div>
+      <div className="cv-auto">
+        <RecentProjects />
+      </div>
+      <div className="cv-auto">
+        <WhyTriML />
+      </div>
+      <div className="cv-auto">
+        <DevelopmentProcess />
+      </div>
       <ContactCTA />
     </>
   )

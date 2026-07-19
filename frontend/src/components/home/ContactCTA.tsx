@@ -1,8 +1,9 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Mail, Phone, Globe, MapPin, Send, ArrowRight, Loader2, Building2 } from 'lucide-react'
 import { ApiError } from '../../api/client'
 import { submitContactEnquiry } from '../../api/contact'
-import { company, services } from '../../data/content'
+import { company } from '../../data/content'
+import { serviceNavItems } from '../../data/serviceNav'
 import { useBackendStatus } from '../../hooks/useBackendStatus'
 import Button from '../ui/Button'
 import AnimateIn from '../ui/AnimateIn'
@@ -25,7 +26,8 @@ interface ContactCTAProps {
 
 export default function ContactCTA({ variant = 'section' }: ContactCTAProps) {
   const isPage = variant === 'page'
-  const { isOnline, isWaking, isUnavailable, retry } = useBackendStatus()
+  const { isWaking, isUnavailable, ensureReady, retry } = useBackendStatus()
+  const sectionRef = useRef<HTMLElement>(null)
   const [clientReady, setClientReady] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [successMessage, setSuccessMessage] = useState('')
@@ -36,16 +38,47 @@ export default function ContactCTA({ variant = 'section' }: ContactCTAProps) {
     setClientReady(true)
   }, [])
 
+  // Wake the API when the contact section approaches the viewport or on the contact page.
+  useEffect(() => {
+    if (!clientReady) return
+    if (isPage) {
+      ensureReady()
+      return
+    }
+
+    const el = sectionRef.current
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      ensureReady()
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          ensureReady()
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '200px 0px' },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [clientReady, ensureReady, isPage])
+
   // Keep prerendered HTML clean for Google: hide wake/error UI until the client mounts.
   const waking = clientReady && isWaking
   const unavailable = clientReady && isUnavailable
-  const online = !clientReady || isOnline
   const fieldsDisabled = unavailable || loading
-  const submitDisabled = !online || loading
+  const submitDisabled = waking || unavailable || loading
+
+  function handleFormIntent() {
+    ensureReady()
+  }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (!online) return
+    ensureReady()
+    if (unavailable || isWaking) return
     setLoading(true)
     setError('')
 
@@ -85,6 +118,7 @@ export default function ContactCTA({ variant = 'section' }: ContactCTAProps) {
 
   return (
     <section
+      ref={sectionRef}
       id="contact"
       className={`dark-section w-full overflow-x-clip scroll-mt-[calc(3.5rem+env(safe-area-inset-top,0px))] sm:scroll-mt-[calc(4rem+env(safe-area-inset-top,0px))] ${
         isPage ? 'py-10 sm:py-12 lg:py-16' : 'py-8 sm:py-11 lg:py-14'
@@ -169,7 +203,11 @@ export default function ContactCTA({ variant = 'section' }: ContactCTAProps) {
                   <p className="mt-1.5 max-w-sm text-sm text-gray-400">{successMessage}</p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="w-full space-y-3">
+                <form
+                  onSubmit={handleSubmit}
+                  onFocusCapture={handleFormIntent}
+                  className="w-full space-y-3"
+                >
                   <div className="grid w-full gap-3 sm:grid-cols-2">
                     <div className="min-w-0">
                       <label htmlFor="name" className="mb-1 block text-sm font-medium text-gray-300">
@@ -245,7 +283,7 @@ export default function ContactCTA({ variant = 'section' }: ContactCTAProps) {
                       <option value="" className="bg-navy-900 text-gray-300">
                         Select a service
                       </option>
-                      {services.map((service) => (
+                      {serviceNavItems.map((service) => (
                         <option
                           key={service.id}
                           value={service.navLabel}
@@ -274,31 +312,30 @@ export default function ContactCTA({ variant = 'section' }: ContactCTAProps) {
                       placeholder="Tell us about your project..."
                     />
                   </div>
-                  {waking ? (
-                    <p
-                      className="flex items-center gap-2 text-sm text-brand-300"
-                      role="status"
-                      aria-live="polite"
-                    >
-                      <Loader2 size={16} className="shrink-0 animate-spin" aria-hidden />
-                      Starting our secure server... Please wait a few seconds.
-                    </p>
-                  ) : null}
-                  {unavailable ? (
-                    <div className="space-y-2" role="alert">
-                      <p className="text-sm text-red-400">
-                        Our server is currently unavailable. Please try again in a few minutes.
+                  {/* Reserved status slot prevents CLS when wake/error messages appear */}
+                  <div className="min-h-[2.75rem]" aria-live="polite">
+                    {waking ? (
+                      <p className="flex items-center gap-2 text-sm text-brand-300" role="status">
+                        <Loader2 size={16} className="shrink-0 animate-spin" aria-hidden />
+                        Starting our secure server... Please wait a few seconds.
                       </p>
-                      <Button type="button" variant="secondary" className="w-full" onClick={retry}>
-                        Retry
-                      </Button>
-                    </div>
-                  ) : null}
-                  {error ? (
-                    <p className="text-sm text-red-400" role="alert">
-                      {error}
-                    </p>
-                  ) : null}
+                    ) : null}
+                    {unavailable ? (
+                      <div className="space-y-2" role="alert">
+                        <p className="text-sm text-red-400">
+                          Our server is currently unavailable. Please try again in a few minutes.
+                        </p>
+                        <Button type="button" variant="secondary" className="w-full" onClick={retry}>
+                          Retry
+                        </Button>
+                      </div>
+                    ) : null}
+                    {error && !unavailable ? (
+                      <p className="text-sm text-red-400" role="alert">
+                        {error}
+                      </p>
+                    ) : null}
+                  </div>
                   {!unavailable ? (
                     <Button type="submit" className="w-full" disabled={submitDisabled}>
                       {loading ? 'Sending...' : 'Send Message'}
